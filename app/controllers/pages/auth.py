@@ -5,13 +5,18 @@ from litestar.params import Body
 from litestar.response import Redirect
 from litestar_users.schema import AuthenticationSchema
 from litestar_users.service import UserServiceType
-from typing import cast, Annotated
-from litestar import Request, post, Controller
+from typing import Annotated
+from litestar import Request, post, Controller, get
 from litestar.di import Provide
 from litestar_users.dependencies import provide_user_service
 from app.security import UserRegistrationDTO, UserReadDTO, UserRegistrationSchema
+from litestar.response import Template
 
 class AuthPageController(Controller):
+    @get('/auth')
+    async def index(self) -> Template:
+        return Template(template_name="auth_v2.html.jinja2")
+
     @post(
         f'/register/form',
         dto=UserRegistrationDTO,

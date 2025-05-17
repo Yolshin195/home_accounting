@@ -3,8 +3,8 @@ from litestar.response import Template
 
 
 class CalendarController(Controller):
-    path = "/"
+    path = "/calendar"
 
     @get()
-    async def calendar_v2_index(self) -> Template:
-        return Template(template_name="transaction_v2.html.jinja2")
+    async def index(self) -> Template:
+        return Template(template_name="calendar.html.jinja2")
