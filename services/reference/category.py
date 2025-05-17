@@ -14,6 +14,8 @@ class CategoryReferenceService:
     async def create_category(self, new_category: CategoryCreate) -> None:
         await self.repo.create(Category(
             name=new_category.name,
+            icon=new_category.icon,
+            description=new_category.description,
             type=new_category.type,
             author=self.author,
         ), auto_commit=True)

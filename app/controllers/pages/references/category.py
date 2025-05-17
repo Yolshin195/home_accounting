@@ -17,6 +17,13 @@ class CategoryReferenceController(Controller):
     }
 
     @get()
+    async def category_v3_index(self, service: CategoryReferenceService) -> Template:
+        categories = await service.get_categories()
+        return Template(template_name="references/category_v3.html.jinja2", context={
+            "categories": categories
+        })
+
+    @get('/old')
     async def category_v2_index(self, service: CategoryReferenceService) -> Template:
         categories = await service.get_categories()
         return Template(template_name="references/category_v2.html.jinja2", context={

@@ -14,6 +14,8 @@ class TransactionType(str, Enum):
 # Базовая схема с общими полями
 class CategoryBase(BaseModel):
     name: str
+    icon: Optional[str] = None
+    description: Optional[str] = None
     type: TransactionType = TransactionType.EXPENSE
 
 

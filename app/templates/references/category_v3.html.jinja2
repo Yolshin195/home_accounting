@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категории - Домашняя бухгалтерия</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #5c6ac4;
+            --primary-light: #f5f7ff;
+            --primary-dark: #4c5aa9;
+            --secondary-color: #6b7280;
+            --success-color: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --danger-color: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.1);
+            --warning-color: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --dark-color: #111827;
+            --light-color: #f9fafb;
+            --border-color: #e5e7eb;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-color);
+            background-color: #f3f4f6;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .header {
+            background-color: white;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-icon {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+        }
+
+        .brand-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 0.5rem;
+        }
+
+        .nav-item a {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-item a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .nav-item a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .language-selector {
+            display: flex;
+            margin-left: 1rem;
+        }
+
+        .language-btn {
+            background: none;
+            border: none;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+
+        .language-btn.active {
+            opacity: 1;
+            border: 2px solid var(--primary-color);
+        }
+
+        .language-btn:hover {
+            opacity: 1;
+            background-color: var(--primary-light);
+        }
+
+        .lang-text {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-close {
+                display: none;
+            }
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #0da571;
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #e02424;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(92, 106, 196, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px 12px;
+            appearance: none;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(92, 106, 196, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-top: 0;
+            border: 1px solid var(--border-color);
+            border-radius: 0.25rem;
+            transition: var(--transition);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-check-label {
+            font-size: 1rem;
+            color: var(--dark-color);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--secondary-color);
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+        }
+
+        .badge-success {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .badge-danger {
+            background-color: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .badge-primary {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .category-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .category-icon-income {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .category-icon-expense {
+            background-color: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+        .category-item:hover {
+            background-color: var(--primary-light);
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .category-description {
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+        }
+
+        .category-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .action-btn-danger:hover {
+            background-color: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        .category-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .category-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .category-list::-webkit-scrollbar-track {
+            background: var(--light-color);
+            border-radius: 3px;
+        }
+
+        .category-list::-webkit-scrollbar-thumb {
+            background-color: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box .form-control {
+            padding-left: 2.5rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+
+        .modal-content {
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .btn-close {
+            background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+
+        .btn-close:hover {
+            opacity: 0.75;
+        }
+
+        .icon-selector {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .icon-option {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            background-color: var(--light-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-option:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .icon-option.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .color-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .color-option {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border-color: var(--dark-color);
+        }
+
+        .footer {
+            background-color: white;
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-copyright {
+            color: var(--secondary-color);
+            font-size: 0.875rem;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-description {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            max-width: 400px;
+        }
+
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .navigation {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                justify-content: center;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
+
+            .navigation.active {
+                transform: translateX(0);
+            }
+
+            .nav-list {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .nav-item a {
+                font-size: 1.25rem;
+                padding: 0.75rem 2rem;
+            }
+
+            .language-selector {
+                margin: 2rem 0 0;
+            }
+
+            .category-filter {
+                flex-wrap: wrap;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .category-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .category-icon {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            .category-actions {
+                margin-top: 1rem;
+                align-self: flex-end;
+            }
+
+            .icon-selector {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <div class="brand">
+                    <i class="bi bi-wallet2 brand-icon"></i>
+                    <h1 class="brand-title" data-lang="app_title">Домашняя бухгалтерия</h1>
+                </div>
+
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <div class="navigation" id="navigation">
+                    <button class="mobile-menu-close" id="mobileMenuClose">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+
+                    <nav>
+                        <ul class="nav-list">
+                            <li class="nav-item">
+                                <a href="/v2/landing" data-lang="nav_home">Главная</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2/dashboard" data-lang="nav_dashboard">Дашборд</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2" data-lang="nav_transactions">Транзакции</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2/categories" class="active" data-lang="nav_categories">Категории</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2/calendar" data-lang="nav_calendar">Календарь</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2/budget" data-lang="nav_budget">Бюджет</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="language-selector">
+                        <button class="language-btn" onclick="changeLanguage('en')" title="English">
+                            <span class="lang-text">EN</span>
+                        </button>
+                        <button class="language-btn active" onclick="changeLanguage('ru')" title="Русский">
+                            <span class="lang-text">RU</span>
+                        </button>
+                        <button class="language-btn" onclick="changeLanguage('th')" title="ไทย">
+                            <span class="lang-text">TH</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+        <h1 class="page-title" data-lang="categories_title">Управление категориями</h1>
+        <p class="page-subtitle" data-lang="categories_subtitle">Создавайте и настраивайте категории для более эффективного учета финансов</p>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" data-lang="categories_list">Список категорий</h2>
+                        <button class="btn btn-primary" id="createCategoryBtn" data-lang="categories_create_new">
+                            <i class="bi bi-plus-lg"></i>
+                            <span>Создать категорию</span>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="search-box">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" class="form-control" id="categorySearch" placeholder="Поиск категорий..." data-lang-placeholder="categories_search_placeholder">
+                        </div>
+
+                        <div class="category-filter">
+                            <button class="filter-btn active" data-filter="all" data-lang="categories_filter_all">Все</button>
+                            <button class="filter-btn" data-filter="income" data-lang="categories_filter_income">Доходы</button>
+                            <button class="filter-btn" data-filter="expense" data-lang="categories_filter_expense">Расходы</button>
+                        </div>
+
+                        <div class="category-list">
+                            <!-- Категории доходов -->
+                            <div class="category-item" data-category-type="income">
+                                <div class="category-icon category-icon-income">
+                                    <i class="bi bi-briefcase"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_salary">Зарплата</div>
+                                    <div class="category-description" data-lang="category_salary_desc">Основной доход от работы</div>
+                                </div>
+                                <div class="badge badge-success" data-lang="category_type_income">Доход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="category-item" data-category-type="income">
+                                <div class="category-icon category-icon-income">
+                                    <i class="bi bi-bank"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_investments">Инвестиции</div>
+                                    <div class="category-description" data-lang="category_investments_desc">Доходы от инвестиций и вкладов</div>
+                                </div>
+                                <div class="badge badge-success" data-lang="category_type_income">Доход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="category-item" data-category-type="income">
+                                <div class="category-icon category-icon-income">
+                                    <i class="bi bi-gift"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_gifts">Подарки</div>
+                                    <div class="category-description" data-lang="category_gifts_desc">Денежные подарки и материальная помощь</div>
+                                </div>
+                                <div class="badge badge-success" data-lang="category_type_income">Доход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Категории расходов -->
+                            <div class="category-item" data-category-type="expense">
+                                <div class="category-icon category-icon-expense">
+                                    <i class="bi bi-house"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_housing">Жилье</div>
+                                    <div class="category-description" data-lang="category_housing_desc">Аренда, коммунальные услуги, ремонт</div>
+                                </div>
+                                <div class="badge badge-danger" data-lang="category_type_expense">Расход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="category-item" data-category-type="expense">
+                                <div class="category-icon category-icon-expense">
+                                    <i class="bi bi-cart"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_groceries">Продукты</div>
+                                    <div class="category-description" data-lang="category_groceries_desc">Продукты питания и товары для дома</div>
+                                </div>
+                                <div class="badge badge-danger" data-lang="category_type_expense">Расход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="category-item" data-category-type="expense">
+                                <div class="category-icon category-icon-expense">
+                                    <i class="bi bi-car-front"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_transport">Транспорт</div>
+                                    <div class="category-description" data-lang="category_transport_desc">Общественный транспорт, такси, топливо</div>
+                                </div>
+                                <div class="badge badge-danger" data-lang="category_type_expense">Расход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="category-item" data-category-type="expense">
+                                <div class="category-icon category-icon-expense">
+                                    <i class="bi bi-cup-hot"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_entertainment">Развлечения</div>
+                                    <div class="category-description" data-lang="category_entertainment_desc">Кино, рестораны, концерты, хобби</div>
+                                </div>
+                                <div class="badge badge-danger" data-lang="category_type_expense">Расход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="category-item" data-category-type="expense">
+                                <div class="category-icon category-icon-expense">
+                                    <i class="bi bi-heart-pulse"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_health">Здоровье</div>
+                                    <div class="category-description" data-lang="category_health_desc">Лекарства, врачи, медицинские услуги</div>
+                                </div>
+                                <div class="badge badge-danger" data-lang="category_type_expense">Расход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="category-item" data-category-type="expense">
+                                <div class="category-icon category-icon-expense">
+                                    <i class="bi bi-book"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name" data-lang="category_education">Образование</div>
+                                    <div class="category-description" data-lang="category_education_desc">Курсы, книги, обучение</div>
+                                </div>
+                                <div class="badge badge-danger" data-lang="category_type_expense">Расход</div>
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" data-lang="categories_stats">Статистика категорий</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span data-lang="categories_total">Всего категорий:</span>
+                                <span class="fw-bold">9</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span data-lang="categories_income">Категории доходов:</span>
+                                <span class="fw-bold">3</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span data-lang="categories_expense">Категории расходов:</span>
+                                <span class="fw-bold">6</span>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-primary" role="alert">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <span data-lang="categories_tip_1">Создавайте конкретные категории для лучшего анализа расходов.</span>
+                        </div>
+                        <div class="alert alert-success" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <span data-lang="categories_tip_2">Используйте иконки для быстрой визуальной идентификации категорий.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" data-lang="categories_recent">Недавние транзакции</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-truncate" data-lang="category_groceries">Продукты</span>
+                                <span class="text-danger">-2 500 ₽</span>
+                            </div>
+                            <div class="text-secondary small">15 мая 2025, 14:30</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-truncate" data-lang="category_salary">Зарплата</span>
+                                <span class="text-success">+75 000 ₽</span>
+                            </div>
+                            <div class="text-secondary small">10 мая 2025, 09:15</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-truncate" data-lang="category_transport">Транспорт</span>
+                                <span class="text-danger">-1 200 ₽</span>
+                            </div>
+                            <div class="text-secondary small">8 мая 2025, 18:45</div>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-truncate" data-lang="category_entertainment">Развлечения</span>
+                                <span class="text-danger">-3 500 ₽</span>
+                            </div>
+                            <div class="text-secondary small">5 мая 2025, 20:10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно для создания/редактирования категории -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryModalLabel" data-lang="categories_create_new">Создать категорию</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="categoryForm">
+                        <div class="form-group">
+                            <label for="categoryName" class="form-label" data-lang="category_name">Название категории</label>
+                            <input name="name" type="text" class="form-control" id="categoryName" placeholder="Например: Продукты" data-lang-placeholder="category_name_placeholder">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryDescription" class="form-label" data-lang="category_description">Описание</label>
+                            <textarea name="description" class="form-control" id="categoryDescription" rows="2" placeholder="Краткое описание категории" data-lang-placeholder="category_description_placeholder"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-lang="category_type">Тип категории</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="type" id="typeIncome" value="income" checked>
+                                <label class="form-check-label" for="typeIncome" data-lang="category_type_income">Доход</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="type" id="typeExpense" value="expense">
+                                <label class="form-check-label" for="typeExpense" data-lang="category_type_expense">Расход</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-lang="category_icon">Иконка</label>
+                            <div class="icon-selector">
+                                <div class="icon-option selected" data-icon="bi-wallet2">
+                                    <i class="bi bi-wallet2"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-house">
+                                    <i class="bi bi-house"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-cart">
+                                    <i class="bi bi-cart"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-car-front">
+                                    <i class="bi bi-car-front"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-cup-hot">
+                                    <i class="bi bi-cup-hot"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-heart-pulse">
+                                    <i class="bi bi-heart-pulse"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-book">
+                                    <i class="bi bi-book"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-briefcase">
+                                    <i class="bi bi-briefcase"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-bank">
+                                    <i class="bi bi-bank"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-gift">
+                                    <i class="bi bi-gift"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-phone">
+                                    <i class="bi bi-phone"></i>
+                                </div>
+                                <div class="icon-option" data-icon="bi-airplane">
+                                    <i class="bi bi-airplane"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal" data-lang="categories_cancel">Отмена</button>
+                    <button type="button" class="btn btn-primary" id="saveCategoryBtn" data-lang="categories_save">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#" class="footer-link" data-lang="footer_help">Помощь</a>
+                    <a href="#" class="footer-link" data-lang="footer_privacy">Конфиденциальность</a>
+                    <a href="#" class="footer-link" data-lang="footer_terms">Условия использования</a>
+                </div>
+                <div class="footer-copyright">
+                    &copy; 2025 <span data-lang="app_title">Домашняя бухгалтерия</span>. <span data-lang="footer_rights">Все права защищены.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Словари для разных языков
+        const dictionaries = {
+            ru: {
+                // Общие
+                app_title: "Домашняя бухгалтерия",
+                nav_home: "Главная",
+                nav_transactions: "Транзакции",
+                nav_categories: "Категории",
+                nav_calendar: "Календарь",
+                nav_budget: "Бюджет",
+
+                // Категории
+                categories_title: "Управление категориями",
+                categories_subtitle: "Создавайте и настраивайте категории для более эффективного учета финансов",
+                categories_list: "Список категорий",
+                categories_create_new: "Создать категорию",
+                categories_search_placeholder: "Поиск категорий...",
+                categories_filter_all: "Все",
+                categories_filter_income: "Доходы",
+                categories_filter_expense: "Расходы",
+                categories_stats: "Статистика категорий",
+                categories_total: "Всего категорий:",
+                categories_income: "Категории доходов:",
+                categories_expense: "Категории расходов:",
+                categories_tip_1: "Создавайте конкретные категории для лучшего анализа расходов.",
+                categories_tip_2: "Используйте иконки для быстрой визуальной идентификации категорий.",
+                categories_recent: "Недавние транзакции",
+                categories_cancel: "Отмена",
+                categories_save: "Сохранить",
+
+                // Категории доходов
+                category_salary: "Зарплата",
+                category_salary_desc: "Основной доход от работы",
+                category_investments: "Инвестиции",
+                category_investments_desc: "Доходы от инвестиций и вкладов",
+                category_gifts: "Подарки",
+                category_gifts_desc: "Денежные подарки и материальная помощь",
+
+                // Категории расходов
+                category_housing: "Жилье",
+                category_housing_desc: "Аренда, коммунальные услуги, ремонт",
+                category_groceries: "Продукты",
+                category_groceries_desc: "Продукты питания и товары для дома",
+                category_transport: "Транспорт",
+                category_transport_desc: "Общественный транспорт, такси, топливо",
+                category_entertainment: "Развлечения",
+                category_entertainment_desc: "Кино, рестораны, концерты, хобби",
+                category_health: "Здоровье",
+                category_health_desc: "Лекарства, врачи, медицинские услуги",
+                category_education: "Образование",
+                category_education_desc: "Курсы, книги, обучение",
+
+                // Форма категории
+                category_name: "Название категории",
+                category_name_placeholder: "Например: Продукты",
+                category_description: "Описание",
+                category_description_placeholder: "Краткое описание категории",
+                category_type: "Тип категории",
+                category_type_income: "Доход",
+                category_type_expense: "Расход",
+                category_icon: "Иконка",
+
+                // Футер
+                footer_help: "Помощь",
+                footer_privacy: "Конфиденциальность",
+                footer_terms: "Условия использования",
+                footer_rights: "Все права защищены."
+            },
+            en: {
+                // General
+                app_title: "Home Accounting",
+                nav_home: "Home",
+                nav_transactions: "Transactions",
+                nav_categories: "Categories",
+                nav_calendar: "Calendar",
+                nav_budget: "Budget",
+
+                // Categories
+                categories_title: "Category Management",
+                categories_subtitle: "Create and customize categories for more effective financial tracking",
+                categories_list: "Categories List",
+                categories_create_new: "Create Category",
+                categories_search_placeholder: "Search categories...",
+                categories_filter_all: "All",
+                categories_filter_income: "Income",
+                categories_filter_expense: "Expenses",
+                categories_stats: "Category Statistics",
+                categories_total: "Total categories:",
+                categories_income: "Income categories:",
+                categories_expense: "Expense categories:",
+                categories_tip_1: "Create specific categories for better expense analysis.",
+                categories_tip_2: "Use icons for quick visual identification of categories.",
+                categories_recent: "Recent Transactions",
+                categories_cancel: "Cancel",
+                categories_save: "Save",
+
+                // Income categories
+                category_salary: "Salary",
+                category_salary_desc: "Main income from work",
+                category_investments: "Investments",
+                category_investments_desc: "Income from investments and deposits",
+                category_gifts: "Gifts",
+                category_gifts_desc: "Money gifts and financial aid",
+
+                // Expense categories
+                category_housing: "Housing",
+                category_housing_desc: "Rent, utilities, repairs",
+                category_groceries: "Groceries",
+                category_groceries_desc: "Food and household items",
+                category_transport: "Transport",
+                category_transport_desc: "Public transport, taxi, fuel",
+                category_entertainment: "Entertainment",
+                category_entertainment_desc: "Movies, restaurants, concerts, hobbies",
+                category_health: "Health",
+                category_health_desc: "Medicine, doctors, medical services",
+                category_education: "Education",
+                category_education_desc: "Courses, books, training",
+
+                // Category form
+                category_name: "Category Name",
+                category_name_placeholder: "For example: Groceries",
+                category_description: "Description",
+                category_description_placeholder: "Brief description of the category",
+                category_type: "Category Type",
+                category_type_income: "Income",
+                category_type_expense: "Expense",
+                category_icon: "Icon",
+
+                // Footer
+                footer_help: "Help",
+                footer_privacy: "Privacy",
+                footer_terms: "Terms of Use",
+                footer_rights: "All rights reserved."
+            },
+            th: {
+                // ทั่วไป
+                app_title: "บัญชีครัวเรือน",
+                nav_home: "หน้าหลัก",
+                nav_transactions: "ธุรกรรม",
+                nav_categories: "หมวดหมู่",
+                nav_calendar: "ปฏิทิน",
+                nav_budget: "งบประมาณ",
+
+                // หมวดหมู่
+                categories_title: "การจัดการหมวดหมู่",
+                categories_subtitle: "สร้างและปรับแต่งหมวดหมู่เพื่อการติดตามทางการเงินที่มีประสิทธิภาพมากขึ้น",
+                categories_list: "รายการหมวดหมู่",
+                categories_create_new: "สร้างหมวดหมู่",
+                categories_search_placeholder: "ค้นหาหมวดหมู่...",
+                categories_filter_all: "ทั้งหมด",
+                categories_filter_income: "รายได้",
+                categories_filter_expense: "ค่าใช้จ่าย",
+                categories_stats: "สถิติหมวดหมู่",
+                categories_total: "หมวดหมู่ทั้งหมด:",
+                categories_income: "หมวดหมู่รายได้:",
+                categories_expense: "หมวดหมู่ค่าใช้จ่าย:",
+                categories_tip_1: "สร้างหมวดหมู่เฉพาะเพื่อการวิเคราะห์ค่าใช้จ่ายที่ดีขึ้น",
+                categories_tip_2: "ใช้ไอคอนเพื่อการระบุหมวดหมู่ด้วยภาพอย่างรวดเร็ว",
+                categories_recent: "ธุรกรรมล่าสุด",
+                categories_cancel: "ยกเลิก",
+                categories_save: "บันทึก",
+
+                // หมวดหมู่รายได้
+                category_salary: "เงินเดือน",
+                category_salary_desc: "รายได้หลักจากการทำงาน",
+                category_investments: "การลงทุน",
+                category_investments_desc: "รายได้จากการลงทุนและเงินฝาก",
+                category_gifts: "ของขวัญ",
+                category_gifts_desc: "ของขวัญเงินและความช่วยเหลือทางการเงิน",
+
+                // หมวดหมู่ค่าใช้จ่าย
+                category_housing: "ที่อยู่อาศัย",
+                category_housing_desc: "ค่าเช่า, สาธารณูปโภค, การซ่อมแซม",
+                category_groceries: "ของชำ",
+                category_groceries_desc: "อาหารและของใช้ในครัวเรือน",
+                category_transport: "การขนส่ง",
+                category_transport_desc: "ขนส่งสาธารณะ, แท็กซี่, เชื้อเพลิง",
+                category_entertainment: "ความบันเทิง",
+                category_entertainment_desc: "ภาพยนตร์, ร้านอาหาร, คอนเสิร์ต, งานอดิเรก",
+                category_health: "สุขภาพ",
+                category_health_desc: "ยา, แพทย์, บริการทางการแพทย์",
+                category_education: "การศึกษา",
+                category_education_desc: "หลักสูตร, หนังสือ, การฝึกอบรม",
+
+                // แบบฟอร์มหมวดหมู่
+                category_name: "ชื่อหมวดหมู่",
+                category_name_placeholder: "ตัวอย่าง: ของชำ",
+                category_description: "คำอธิบาย",
+                category_description_placeholder: "คำอธิบายสั้นๆ ของหมวดหมู่",
+                category_type: "ประเภทหมวดหมู่",
+                category_type_income: "รายได้",
+                category_type_expense: "ค่าใช้จ่าย",
+                category_icon: "ไอคอน",
+
+                // ส่วนท้าย
+                footer_help: "ช่วยเหลือ",
+                footer_privacy: "ความเป็นส่วนตัว",
+                footer_terms: "เงื่อนไขการใช้งาน",
+                footer_rights: "สงวนลิขสิทธิ์ทั้งหมด"
+            }
+        };
+
+        // Текущий язык (по умолчанию русский)
+        let currentLang = 'ru';
+
+        // Функция для изменения языка
+        function changeLanguage(lang) {
+            if (!dictionaries[lang]) return;
+
+            currentLang = lang;
+
+            // Обновляем атрибут lang у html
+            document.documentElement.lang = lang;
+
+            // Обновляем активную кнопку языка
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+            // Обновляем все элементы с атрибутом data-lang
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (dictionaries[lang][key]) {
+                    element.textContent = dictionaries[lang][key];
+                }
+            });
+
+            // Обновляем плейсхолдеры
+            document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-lang-placeholder');
+                if (dictionaries[lang][key]) {
+                    element.placeholder = dictionaries[lang][key];
+                }
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, есть ли сохраненный язык в localStorage
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && dictionaries[savedLang]) {
+                changeLanguage(savedLang);
+            } else {
+                // Если нет сохраненного языка, используем язык браузера или русский по умолчанию
+                const browserLang = navigator.language.split('-')[0];
+                if (dictionaries[browserLang]) {
+                    changeLanguage(browserLang);
+                } else {
+                    changeLanguage('ru');
+                }
+            }
+
+            // Мобильное меню
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const navigation = document.getElementById('navigation');
+
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    navigation.classList.add('active');
+                });
+            }
+
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', function() {
+                    navigation.classList.remove('active');
+                });
+            }
+
+            // Закрытие мобильного меню при клике на ссылку
+            document.querySelectorAll('.nav-item a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navigation.classList.remove('active');
+                });
+            });
+
+            // Фильтрация категорий
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+
+                    // Обновляем активную кнопку
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Фильтруем категории
+                    document.querySelectorAll('.category-item').forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category-type') === filter) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Поиск категорий
+            document.getElementById('categorySearch').addEventListener('input', function() {
+                const searchText = this.value.toLowerCase();
+
+                document.querySelectorAll('.category-item').forEach(item => {
+                    const categoryName = item.querySelector('.category-name').textContent.toLowerCase();
+                    const categoryDesc = item.querySelector('.category-description').textContent.toLowerCase();
+
+                    if (categoryName.includes(searchText) || categoryDesc.includes(searchText)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            // Модальное окно для создания категории
+            const categoryModal = new bootstrap.Modal(document.getElementById('categoryModal'));
+
+            document.getElementById('createCategoryBtn').addEventListener('click', function() {
+                // Сбрасываем форму
+                document.getElementById('categoryForm').reset();
+
+                // Обновляем заголовок модального окна
+                document.getElementById('categoryModalLabel').textContent = dictionaries[currentLang].categories_create_new;
+
+                // Показываем модальное окно
+                categoryModal.show();
+            });
+
+            // Выбор иконки
+            document.querySelectorAll('.icon-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // Редактирование категории
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                if (btn.querySelector('.bi-pencil')) {
+                    btn.addEventListener('click', function() {
+                        const categoryItem = this.closest('.category-item');
+                        const categoryName = categoryItem.querySelector('.category-name').textContent;
+                        const categoryDesc = categoryItem.querySelector('.category-description').textContent;
+                        const categoryType = categoryItem.getAttribute('data-category-type');
+                        const categoryIcon = categoryItem.querySelector('.category-icon i').className.replace('bi ', '');
+
+                        // Заполняем форму
+                        document.getElementById('categoryName').value = categoryName;
+                        document.getElementById('categoryDescription').value = categoryDesc;
+
+                        if (categoryType === 'income') {
+                            document.getElementById('typeIncome').checked = true;
+                        } else {
+                            document.getElementById('typeExpense').checked = true;
+                        }
+
+                        // Выбираем иконку
+                        document.querySelectorAll('.icon-option').forEach(opt => {
+                            if (opt.getAttribute('data-icon') === categoryIcon) {
+                                document.querySelectorAll('.icon-option').forEach(o => o.classList.remove('selected'));
+                                opt.classList.add('selected');
+                            }
+                        });
+
+                        // Обновляем заголовок модального окна
+                        document.getElementById('categoryModalLabel').textContent = dictionaries[currentLang].categories_edit || 'Редактировать категорию';
+
+                        // Показываем модальное окно
+                        categoryModal.show();
+                    });
+                }
+            });
+
+            // Удаление категории
+            document.querySelectorAll('.action-btn-danger').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (confirm(dictionaries[currentLang].categories_delete_confirm || 'Вы уверены, что хотите удалить эту категорию?')) {
+                        const categoryItem = this.closest('.category-item');
+                        categoryItem.remove();
+
+                        // Обновляем статистику
+                        updateCategoryStats();
+                    }
+                });
+            });
+
+            // Сохранение категории
+            document.getElementById('saveCategoryBtn').addEventListener('click', function() {
+                // Получаем данные из формы
+                const categoryName = document.getElementById('categoryName').value;
+                const categoryDesc = document.getElementById('categoryDescription').value;
+                const categoryType = document.querySelector('input[name="categoryType"]:checked').value;
+                const categoryIcon = document.querySelector('.icon-option.selected').getAttribute('data-icon');
+
+                // Здесь будет логика сохранения категории
+                // В реальном приложении здесь будет отправка данных на сервер
+
+                // Закрываем модальное окно
+                categoryModal.hide();
+
+                // Показываем уведомление об успешном сохранении
+                alert(dictionaries[currentLang].categories_save_success || 'Категория успешно сохранена!');
+
+                // Обновляем список категорий (в реальном приложении здесь будет обновление списка с сервера)
+                // Для демонстрации просто добавим новую категорию в список
+                const categoryList = document.querySelector('.category-list');
+                const newCategory = document.createElement('div');
+                newCategory.className = 'category-item';
+                newCategory.setAttribute('data-category-type', categoryType);
+                newCategory.innerHTML = `
+                    <div class="category-icon category-icon-${categoryType}">
+                        <i class="bi ${categoryIcon}"></i>
+                    </div>
+                    <div class="category-info">
+                        <div class="category-name">${categoryName}</div>
+                        <div class="category-description">${categoryDesc}</div>
+                    </div>
+                    <div class="badge badge-${categoryType === 'income' ? 'success' : 'danger'}">${categoryType === 'income' ? dictionaries[currentLang].category_type_income : dictionaries[currentLang].category_type_expense}</div>
+                    <div class="category-actions">
+                        <button class="action-btn" title="Редактировать">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="action-btn action-btn-danger" title="Удалить">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+
+                categoryList.appendChild(newCategory);
+
+                // Обновляем статистику
+                updateCategoryStats();
+            });
+
+            // Функция обновления статистики категорий
+            function updateCategoryStats() {
+                const totalCategories = document.querySelectorAll('.category-item').length;
+                const incomeCategories = document.querySelectorAll('.category-item[data-category-type="income"]').length;
+                const expenseCategories = document.querySelectorAll('.category-item[data-category-type="expense"]').length;
+
+                document.querySelector('.card-body .d-flex:nth-child(1) .fw-bold').textContent = totalCategories;
+                document.querySelector('.card-body .d-flex:nth-child(2) .fw-bold').textContent = incomeCategories;
+                document.querySelector('.card-body .d-flex:nth-child(3) .fw-bold').textContent = expenseCategories;
+            }
+
+            // Сохраняем выбранный язык в localStorage при изменении
+            window.changeLanguage = function(lang) {
+                if (!dictionaries[lang]) return;
+
+                currentLang = lang;
+
+                // Обновляем атрибут lang у html
+                document.documentElement.lang = lang;
+
+                // Обновляем активную кнопку языка
+                document.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+                // Обновляем все элементы с атрибутом data-lang
+                document.querySelectorAll('[data-lang]').forEach(element => {
+                    const key = element.getAttribute('data-lang');
+                    if (dictionaries[lang][key]) {
+                        element.textContent = dictionaries[lang][key];
+                    }
+                });
+
+                // Обновляем плейсхолдеры
+                document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+                    const key = element.getAttribute('data-lang-placeholder');
+                    if (dictionaries[lang][key]) {
+                        element.placeholder = dictionaries[lang][key];
+                    }
+                });
+
+                localStorage.setItem('preferredLanguage', lang);
+            };
+        });
+    </script>
+</body>
+</html>

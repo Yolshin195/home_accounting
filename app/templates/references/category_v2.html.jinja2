@@ -578,14 +578,14 @@
                 <div class="category-header">
                     <h3 class="category-title">
                         <div class="category-icon">
-                            <i class="bi bi-briefcase"></i>
+                            <i class="bi {{ category.icon }}"></i>
                         </div>
                         <span>{{ category.name }}</span>
                     </h3>
                     <span class="badge badge-income" data-lang="income">{{ category.type.value }}</span>
                 </div>
                 <div class="category-body">
-                    <p class="category-description" data-lang="salary_description">Регулярный доход от основного места работы</p>
+                    <p class="category-description">{{ category.description }}</p>
                 </div>
                 <div class="category-footer">
                     <div class="action-buttons">
@@ -603,14 +603,14 @@
                 <div class="category-header">
                     <h3 class="category-title">
                         <div class="category-icon">
-                            <i class="bi bi-film"></i>
+                            <i class="bi {{ category.icon }}"></i>
                         </div>
                         <span>{{ category.name }}</span>
                     </h3>
                     <span class="badge badge-expense" data-lang="expense">Расход</span>
                 </div>
                 <div class="category-body">
-                    <p class="category-description" data-lang="entertainment_description">Расходы на развлечения, кино, рестораны и отдых</p>
+                    <p class="category-description">{{ category.description }}</p>
                 </div>
                 <div class="category-footer">
                     <div class="action-buttons">
@@ -828,7 +828,7 @@
                         </div>
                         <div class="form-group">
                             <label for="categoryIcon" class="form-label" data-lang="category_icon">Иконка</label>
-                            <select class="form-select" id="categoryIcon" required>
+                            <select name="icon" class="form-select" id="categoryIcon" required>
                                 <option value="bi-briefcase">📁 Портфель</option>
                                 <option value="bi-laptop">💻 Ноутбук</option>
                                 <option value="bi-bank">🏦 Банк</option>
@@ -844,7 +844,7 @@
                         </div>
                         <div class="form-group">
                             <label for="categoryDescription" class="form-label" data-lang="category_description">Описание</label>
-                            <textarea class="form-control" id="categoryDescription" rows="3"></textarea>
+                            <textarea name="description" class="form-control" id="categoryDescription" rows="3"></textarea>
                         </div>
                     </form>
                 </div>

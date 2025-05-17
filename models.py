@@ -22,6 +22,8 @@ class BaseEntity(UUIDAuditBase):
 
 class Category(BaseEntity):
     name: Mapped[str]
+    icon: Mapped[str] = mapped_column(nullable=True)
+    description: Mapped[str] = mapped_column(nullable=True)
     type: Mapped[TransactionType] = mapped_column(
         SQLEnum(TransactionType, native_enum=False),
         nullable=False,

@@ -1,6 +1,7 @@
 from litestar import Router
 
 from .auth import AuthPageController
+from .budget import BudgetController
 from .calendar import CalendarController
 from .dashboard import DashboardController
 from .landing import LandingController
@@ -14,4 +15,5 @@ pages_router = Router(path="", route_handlers=[
     DashboardController,
     CalendarController,
     LandingController,
+    BudgetController
 ])
