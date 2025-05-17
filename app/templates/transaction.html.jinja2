@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учет расходов и доходов - Домашняя бухгалтерия</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Flatpickr (для выбора даты) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .transaction-income {
+            background-color: rgba(25, 135, 84, 0.1);
+        }
+        .transaction-expense {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+        .btn-icon {
+            padding: 0.25rem 0.5rem;
+        }
+        .modal-header-create {
+            background-color: #198754;
+            color: white;
+        }
+        .modal-header-edit {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .modal-header-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .language-selector {
+            margin-left: auto;
+        }
+        .language-btn {
+            margin-left: 5px;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        .language-btn.active {
+            opacity: 1;
+            border: 2px solid #0d6efd;
+        }
+        .language-btn:hover {
+            opacity: 1;
+        }
+        .language-btn img {
+            width: 24px;
+            height: 24px;
+        }
+        .amount-income {
+            color: #198754;
+            font-weight: bold;
+        }
+        .amount-expense {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .summary-card {
+            transition: transform 0.3s;
+        }
+        .summary-card:hover {
+            transform: translateY(-5px);
+        }
+        .nav-pills .nav-link.active {
+            background-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <header class="pb-3 mb-4 border-bottom">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-wallet2 fs-2 me-2"></i>
+                <h1 class="fs-4" data-lang="app_title">Домашняя бухгалтерия</h1>
+
+                <div class="mx-4">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/reference/category" data-lang="nav_categories">Категории</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/" data-lang="nav_transactions">Операции</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" href="/auth" data-lang="nav_account">Аккаунт</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="language-selector">
+                    <button class="btn btn-sm language-btn" onclick="changeLanguage('en')" title="English">
+                        <img src="https://flagcdn.com/w40/gb.png" alt="English">
+                    </button>
+                    <button class="btn btn-sm language-btn active" onclick="changeLanguage('ru')" title="Русский">
+                        <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
+                    </button>
+                    <button class="btn btn-sm language-btn" onclick="changeLanguage('th')" title="ไทย">
+                        <img src="https://flagcdn.com/w40/th.png" alt="ไทย">
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Сводка -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-light summary-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" data-lang="summary_income">Доходы</h5>
+                        <p class="card-text fs-4 amount-income">+75,000 ₽</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-light summary-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" data-lang="summary_expenses">Расходы</h5>
+                        <p class="card-text fs-4 amount-expense">-42,350 ₽</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-light summary-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" data-lang="summary_balance">Баланс</h5>
+                        <p class="card-text fs-4">32,650 ₽</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-light summary-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" data-lang="summary_transactions">Операций</h5>
+                        <p class="card-text fs-4">24</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 mb-4 bg-light rounded-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="fs-4" data-lang="transactions_title">Учет расходов и доходов</h2>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransactionModal">
+                    <i class="bi bi-plus-lg"></i> <span data-lang="add_transaction">Добавить операцию</span>
+                </button>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" data-lang-placeholder="search_transactions" placeholder="Поиск операций...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option value="all" data-lang="filter_all_types">Все типы</option>
+                        <option value="income" data-lang="filter_income">Доходы</option>
+                        <option value="expense" data-lang="filter_expense">Расходы</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option value="all" data-lang="filter_all_categories">Все категории</option>
+                        <option value="salary" data-lang="income_salary">Зарплата</option>
+                        <option value="freelance" data-lang="income_freelance">Подработка</option>
+                        <option value="groceries" data-lang="expense_groceries">Продукты</option>
+                        <option value="utilities" data-lang="expense_utilities">Коммунальные услуги</option>
+                        <option value="transport" data-lang="expense_transport">Транспорт</option>
+                        <option value="entertainment" data-lang="expense_entertainment">Развлечения</option>
+                        <option value="health" data-lang="expense_health">Здоровье</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control date-range-picker" data-lang-placeholder="date_range" placeholder="Период дат">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" width="5%">#</th>
+                            <th scope="col" width="12%" data-lang="table_date">Дата</th>
+                            <th scope="col" width="10%" data-lang="table_type">Тип</th>
+                            <th scope="col" width="15%" data-lang="table_category">Категория</th>
+                            <th scope="col" width="12%" data-lang="table_amount">Сумма</th>
+                            <th scope="col" width="31%" data-lang="table_description">Описание</th>
+                            <th scope="col" width="15%" data-lang="table_actions">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Доходы -->
+                        <tr class="transaction-income">
+                            <td>1</td>
+                            <td>15.05.2025</td>
+                            <td><span class="badge bg-success" data-lang="income">Доход</span></td>
+                            <td data-lang="income_salary">Зарплата</td>
+                            <td class="amount-income">+45,000 ₽</td>
+                            <td data-lang="salary_may">Зарплата за май</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#editTransactionModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#deleteTransactionModal"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="transaction-income">
+                            <td>2</td>
+                            <td>10.05.2025</td>
+                            <td><span class="badge bg-success" data-lang="income">Доход</span></td>
+                            <td data-lang="income_freelance">Подработка</td>
+                            <td class="amount-income">+15,000 ₽</td>
+                            <td data-lang="freelance_project">Проект для клиента</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#editTransactionModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#deleteTransactionModal"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="transaction-income">
+                            <td>3</td>
+                            <td>05.05.2025</td>
+                            <td><span class="badge bg-success" data-lang="income">Доход</span></td>
+                            <td data-lang="income_interest">Проценты по вкладам</td>
+                            <td class="amount-income">+15,000 ₽</td>
+                            <td data-lang="bank_interest">Проценты по депозиту</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#editTransactionModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#deleteTransactionModal"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+
+                        <!-- Расходы -->
+                        <tr class="transaction-expense">
+                            <td>4</td>
+                            <td>18.05.2025</td>
+                            <td><span class="badge bg-danger" data-lang="expense">Расход</span></td>
+                            <td data-lang="expense_groceries">Продукты</td>
+                            <td class="amount-expense">-5,200 ₽</td>
+                            <td data-lang="weekly_groceries">Еженедельная закупка продуктов</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#editTransactionModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#deleteTransactionModal"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="transaction-expense">
+                            <td>5</td>
+                            <td>15.05.2025</td>
+                            <td><span class="badge bg-danger" data-lang="expense">Расход</span></td>
+                            <td data-lang="expense_utilities">Коммунальные услуги</td>
+                            <td class="amount-expense">-8,500 ₽</td>
+                            <td data-lang="utilities_may">Коммунальные платежи за май</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#editTransactionModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#deleteTransactionModal"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="transaction-expense">
+                            <td>6</td>
+                            <td>12.05.2025</td>
+                            <td><span class="badge bg-danger" data-lang="expense">Расход</span></td>
+                            <td data-lang="expense_transport">Транспорт</td>
+                            <td class="amount-expense">-2,500 ₽</td>
+                            <td data-lang="transport_taxi">Такси и общественный транспорт</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#editTransactionModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#deleteTransactionModal"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="transaction-expense">
+                            <td>7</td>
+                            <td>10.05.2025</td>
+                            <td><span class="badge bg-danger" data-lang="expense">Расход</span></td>
+                            <td data-lang="expense_entertainment">Развлечения</td>
+                            <td class="amount-expense">-4,800 ₽</td>
+                            <td data-lang="entertainment_cinema">Кино и ужин в ресторане</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#editTransactionModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#deleteTransactionModal"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="transaction-expense">
+                            <td>8</td>
+                            <td>08.05.2025</td>
+                            <td><span class="badge bg-danger" data-lang="expense">Расход</span></td>
+                            <td data-lang="expense_health">Здоровье</td>
+                            <td class="amount-expense">-3,500 ₽</td>
+                            <td data-lang="health_medicine">Лекарства и визит к врачу</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#editTransactionModal"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#deleteTransactionModal"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <nav aria-label="Навигация по страницам">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true" data-lang="pagination_prev">Предыдущая</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-lang="pagination_next">Следующая</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Модальное окно для добавления операции -->
+        <div class="modal fade" id="addTransactionModal" tabindex="-1" aria-labelledby="addTransactionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-create">
+                        <h5 class="modal-title" id="addTransactionModalLabel" data-lang="add_transaction_title">Добавление новой операции</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addTransactionForm">
+                            <div class="mb-3">
+                                <label for="transactionDate" class="form-label" data-lang="transaction_date">Дата</label>
+                                <input type="text" class="form-control date-picker" id="transactionDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="transactionType" class="form-label" data-lang="transaction_type">Тип операции</label>
+                                <select class="form-select" id="transactionType" required>
+                                    <option value="" data-lang="select_type">Выберите тип</option>
+                                    <option value="income" data-lang="income">Доход</option>
+                                    <option value="expense" data-lang="expense">Расход</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="transactionCategory" class="form-label" data-lang="transaction_category">Категория</label>
+                                <select class="form-select" id="transactionCategory" required>
+                                    <option value="" data-lang="select_category">Выберите категорию</option>
+                                    <optgroup label="Доходы" data-lang="income_group">
+                                        <option value="salary" data-lang="income_salary">Зарплата</option>
+                                        <option value="freelance" data-lang="income_freelance">Подработка</option>
+                                        <option value="interest" data-lang="income_interest">Проценты по вкладам</option>
+                                    </optgroup>
+                                    <optgroup label="Расходы" data-lang="expense_group">
+                                        <option value="groceries" data-lang="expense_groceries">Продукты</option>
+                                        <option value="utilities" data-lang="expense_utilities">Коммунальные услуги</option>
+                                        <option value="transport" data-lang="expense_transport">Транспорт</option>
+                                        <option value="entertainment" data-lang="expense_entertainment">Развлечения</option>
+                                        <option value="health" data-lang="expense_health">Здоровье</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="transactionAmount" class="form-label" data-lang="transaction_amount">Сумма</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="transactionAmount" min="0" step="0.01" required>
+                                    <span class="input-group-text">₽</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="transactionDescription" class="form-label" data-lang="transaction_description">Описание</label>
+                                <textarea class="form-control" id="transactionDescription" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-lang="cancel">Отмена</button>
+                        <button type="submit" form="addTransactionForm" class="btn btn-success" data-lang="add">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для редактирования операции -->
+        <div class="modal fade" id="editTransactionModal" tabindex="-1" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-edit">
+                        <h5 class="modal-title" id="editTransactionModalLabel" data-lang="edit_transaction_title">Редактирование операции</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editTransactionForm">
+                            <div class="mb-3">
+                                <label for="editTransactionDate" class="form-label" data-lang="transaction_date">Дата</label>
+                                <input type="text" class="form-control date-picker" id="editTransactionDate" value="18.05.2025" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTransactionType" class="form-label" data-lang="transaction_type">Тип операции</label>
+                                <select class="form-select" id="editTransactionType" required>
+                                    <option value="income" data-lang="income">Доход</option>
+                                    <option value="expense" selected data-lang="expense">Расход</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTransactionCategory" class="form-label" data-lang="transaction_category">Категория</label>
+                                <select class="form-select" id="editTransactionCategory" required>
+                                    <optgroup label="Доходы" data-lang="income_group">
+                                        <option value="salary" data-lang="income_salary">Зарплата</option>
+                                        <option value="freelance" data-lang="income_freelance">Подработка</option>
+                                        <option value="interest" data-lang="income_interest">Проценты по вкладам</option>
+                                    </optgroup>
+                                    <optgroup label="Расходы" data-lang="expense_group">
+                                        <option value="groceries" selected data-lang="expense_groceries">Продукты</option>
+                                        <option value="utilities" data-lang="expense_utilities">Коммунальные услуги</option>
+                                        <option value="transport" data-lang="expense_transport">Транспорт</option>
+                                        <option value="entertainment" data-lang="expense_entertainment">Развлечения</option>
+                                        <option value="health" data-lang="expense_health">Здоровье</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTransactionAmount" class="form-label" data-lang="transaction_amount">Сумма</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="editTransactionAmount" value="5200" min="0" step="0.01" required>
+                                    <span class="input-group-text">₽</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTransactionDescription" class="form-label" data-lang="transaction_description">Описание</label>
+                                <textarea class="form-control" id="editTransactionDescription" rows="3">Еженедельная закупка продуктов</textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-lang="cancel">Отмена</button>
+                        <button type="submit" form="editTransactionForm" class="btn btn-primary" data-lang="save">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для удаления операции -->
+        <div class="modal fade" id="deleteTransactionModal" tabindex="-1" aria-labelledby="deleteTransactionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-delete">
+                        <h5 class="modal-title" id="deleteTransactionModalLabel" data-lang="delete_transaction_title">Удаление операции</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><span data-lang="delete_transaction_confirmation">Вы действительно хотите удалить операцию</span> <strong>"<span data-lang="weekly_groceries">Еженедельная закупка продуктов</span>"</strong> <span data-lang="amount_of">на сумму</span> <strong>5,200 ₽</strong>?</p>
+                        <p class="text-danger" data-lang="delete_warning">Это действие нельзя будет отменить.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-lang="cancel">Отмена</button>
+                        <button type="button" class="btn btn-danger" data-lang="delete">Удалить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="pt-3 mt-4 text-muted border-top">
+            &copy; 2025 <span data-lang="app_title">Домашняя бухгалтерия</span>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Локализация для Flatpickr -->
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/th.js"></script>
+
+    <!-- Локализация -->
+    <script>
+        // Словари для разных языков
+        const dictionaries = {
+            ru: {
+                // Общие
+                app_title: "Домашняя бухгалтерия",
+                nav_categories: "Категории",
+                nav_transactions: "Операции",
+
+                // Сводка
+                summary_income: "Доходы",
+                summary_expenses: "Расходы",
+                summary_balance: "Баланс",
+                summary_transactions: "Операций",
+
+                // Заголовки и фильтры
+                transactions_title: "Учет расходов и доходов",
+                add_transaction: "Добавить операцию",
+                search_transactions: "Поиск операций...",
+                filter_all_types: "Все типы",
+                filter_income: "Доходы",
+                filter_expense: "Расходы",
+                filter_all_categories: "Все категории",
+                date_range: "Период дат",
+
+                // Таблица
+                table_date: "Дата",
+                table_type: "Тип",
+                table_category: "Категория",
+                table_amount: "Сумма",
+                table_description: "Описание",
+                table_actions: "Действия",
+
+                // Типы операций
+                income: "Доход",
+                expense: "Расход",
+
+                // Категории доходов
+                income_group: "Доходы",
+                income_salary: "Зарплата",
+                income_freelance: "Подработка",
+                income_interest: "Проценты по вкладам",
+
+                // Категории расходов
+                expense_group: "Расходы",
+                expense_groceries: "Продукты",
+                expense_utilities: "Коммунальные услуги",
+                expense_transport: "Транспорт",
+                expense_entertainment: "Развлечения",
+                expense_health: "Здоровье",
+
+                // Описания операций
+                salary_may: "Зарплата за май",
+                freelance_project: "Проект для клиента",
+                bank_interest: "Проценты по депозиту",
+                weekly_groceries: "Еженедельная закупка продуктов",
+                utilities_may: "Коммунальные платежи за май",
+                transport_taxi: "Такси и общественный транспорт",
+                entertainment_cinema: "Кино и ужин в ресторане",
+                health_medicine: "Лекарства и визит к врачу",
+
+                // Пагинация
+                pagination_prev: "Предыдущая",
+                pagination_next: "Следующая",
+
+                // Модальные окна
+                add_transaction_title: "Добавление новой операции",
+                edit_transaction_title: "Редактирование операции",
+                delete_transaction_title: "Удаление операции",
+                transaction_date: "Дата",
+                transaction_type: "Тип операции",
+                transaction_category: "Категория",
+                transaction_amount: "Сумма",
+                transaction_description: "Описание",
+                select_type: "Выберите тип",
+                select_category: "Выберите категорию",
+                cancel: "Отмена",
+                add: "Добавить",
+                save: "Сохранить",
+                delete: "Удалить",
+                delete_transaction_confirmation: "Вы действительно хотите удалить операцию",
+                amount_of: "на сумму",
+                delete_warning: "Это действие нельзя будет отменить."
+            },
+            en: {
+                // General
+                app_title: "Home Accounting",
+                nav_categories: "Categories",
+                nav_transactions: "Transactions",
+
+                // Summary
+                summary_income: "Income",
+                summary_expenses: "Expenses",
+                summary_balance: "Balance",
+                summary_transactions: "Transactions",
+
+                // Headers and filters
+                transactions_title: "Income and Expense Tracking",
+                add_transaction: "Add Transaction",
+                search_transactions: "Search transactions...",
+                filter_all_types: "All types",
+                filter_income: "Income",
+                filter_expense: "Expenses",
+                filter_all_categories: "All categories",
+                date_range: "Date range",
+
+                // Table
+                table_date: "Date",
+                table_type: "Type",
+                table_category: "Category",
+                table_amount: "Amount",
+                table_description: "Description",
+                table_actions: "Actions",
+
+                // Transaction types
+                income: "Income",
+                expense: "Expense",
+
+                // Income categories
+                income_group: "Income",
+                income_salary: "Salary",
+                income_freelance: "Freelance",
+                income_interest: "Interest",
+
+                // Expense categories
+                expense_group: "Expenses",
+                expense_groceries: "Groceries",
+                expense_utilities: "Utilities",
+                expense_transport: "Transportation",
+                expense_entertainment: "Entertainment",
+                expense_health: "Healthcare",
+
+                // Transaction descriptions
+                salary_may: "May salary",
+                freelance_project: "Client project",
+                bank_interest: "Deposit interest",
+                weekly_groceries: "Weekly grocery shopping",
+                utilities_may: "May utility bills",
+                transport_taxi: "Taxi and public transport",
+                entertainment_cinema: "Cinema and dinner at restaurant",
+                health_medicine: "Medicine and doctor visit",
+
+                // Pagination
+                pagination_prev: "Previous",
+                pagination_next: "Next",
+
+                // Modal windows
+                add_transaction_title: "Add New Transaction",
+                edit_transaction_title: "Edit Transaction",
+                delete_transaction_title: "Delete Transaction",
+                transaction_date: "Date",
+                transaction_type: "Transaction Type",
+                transaction_category: "Category",
+                transaction_amount: "Amount",
+                transaction_description: "Description",
+                select_type: "Select type",
+                select_category: "Select category",
+                cancel: "Cancel",
+                add: "Add",
+                save: "Save",
+                delete: "Delete",
+                delete_transaction_confirmation: "Are you sure you want to delete the transaction",
+                amount_of: "with amount",
+                delete_warning: "This action cannot be undone."
+            },
+            th: {
+                // ทั่วไป
+                app_title: "บัญชีครัวเรือน",
+                nav_categories: "หมวดหมู่",
+                nav_transactions: "ธุรกรรม",
+
+                // สรุป
+                summary_income: "รายรับ",
+                summary_expenses: "รายจ่าย",
+                summary_balance: "ยอดคงเหลือ",
+                summary_transactions: "ธุรกรรม",
+
+                // หัวข้อและตัวกรอง
+                transactions_title: "การติดตามรายรับและรายจ่าย",
+                add_transaction: "เพิ่มธุรกรรม",
+                search_transactions: "ค้นหาธุรกรรม...",
+                filter_all_types: "ทุกประเภท",
+                filter_income: "รายรับ",
+                filter_expense: "รายจ่าย",
+                filter_all_categories: "ทุกหมวดหมู่",
+                date_range: "ช่วงวันที่",
+
+                // ตาราง
+                table_date: "วันที่",
+                table_type: "ประเภท",
+                table_category: "หมวดหมู่",
+                table_amount: "จำนวนเงิน",
+                table_description: "คำอธิบาย",
+                table_actions: "การดำเนินการ",
+
+                // ประเภทธุรกรรม
+                income: "รายรับ",
+                expense: "รายจ่าย",
+
+                // หมวดหมู่รายรับ
+                income_group: "รายรับ",
+                income_salary: "เงินเดือน",
+                income_freelance: "งานอิสระ",
+                income_interest: "ดอกเบี้ย",
+
+                // หมวดหมู่รายจ่าย
+                expense_group: "รายจ่าย",
+                expense_groceries: "ของชำ",
+                expense_utilities: "สาธารณูปโภค",
+                expense_transport: "การเดินทาง",
+                expense_entertainment: "ความบันเทิง",
+                expense_health: "สุขภาพ",
+
+                // คำอธิบายธุรกรรม
+                salary_may: "เงินเดือนเดือนพฤษภาคม",
+                freelance_project: "โครงการลูกค้า",
+                bank_interest: "ดอกเบี้ยเงินฝาก",
+                weekly_groceries: "ซื้อของชำประจำสัปดาห์",
+                utilities_may: "ค่าสาธารณูปโภคเดือนพฤษภาคม",
+                transport_taxi: "แท็กซี่และขนส่งสาธารณะ",
+                entertainment_cinema: "ภาพยนตร์และอาหารเย็นที่ร้านอาหาร",
+                health_medicine: "ยาและการไปพบแพทย์",
+
+                // การแบ่งหน้า
+                pagination_prev: "ก่อนหน้า",
+                pagination_next: "ถัดไป",
+
+                // หน้าต่างโมดัล
+                add_transaction_title: "เพิ่มธุรกรรมใหม่",
+                edit_transaction_title: "แก้ไขธุรกรรม",
+                delete_transaction_title: "ลบธุรกรรม",
+                transaction_date: "วันที่",
+                transaction_type: "ประเภทธุรกรรม",
+                transaction_category: "หมวดหมู่",
+                transaction_amount: "จำนวนเงิน",
+                transaction_description: "คำอธิบาย",
+                select_type: "เลือกประเภท",
+                select_category: "เลือกหมวดหมู่",
+                cancel: "ยกเลิก",
+                add: "เพิ่ม",
+                save: "บันทึก",
+                delete: "ลบ",
+                delete_transaction_confirmation: "คุณแน่ใจหรือไม่ว่าต้องการลบธุรกรรม",
+                amount_of: "ที่มีจำนวนเงิน",
+                delete_warning: "การกระทำนี้ไม่สามารถยกเลิกได้"
+            }
+        };
+
+        // Текущий язык (по умолчанию русский)
+        let currentLang = 'ru';
+
+        // Функция для изменения языка
+        function changeLanguage(lang) {
+            if (!dictionaries[lang]) return;
+
+            currentLang = lang;
+
+            // Обновляем атрибут lang у html
+            document.documentElement.lang = lang;
+
+            // Обновляем активную кнопку языка
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+            // Обновляем все элементы с атрибутом data-lang
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (dictionaries[lang][key]) {
+                    element.textContent = dictionaries[lang][key];
+                }
+            });
+
+            // Обновляем плейсхолдеры
+            document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-lang-placeholder');
+                if (dictionaries[lang][key]) {
+                    element.placeholder = dictionaries[lang][key];
+                }
+            });
+
+            // Обновляем опции в select
+            document.querySelectorAll('option[data-lang]').forEach(option => {
+                const key = option.getAttribute('data-lang');
+                if (dictionaries[lang][key]) {
+                    option.textContent = dictionaries[lang][key];
+                }
+            });
+
+            // Обновляем optgroup в select
+            document.querySelectorAll('optgroup[data-lang]').forEach(optgroup => {
+                const key = optgroup.getAttribute('data-lang');
+                if (dictionaries[lang][key]) {
+                    optgroup.label = dictionaries[lang][key];
+                }
+            });
+
+            // Обновляем локализацию для выбора даты
+            if (flatpickr && flatpickrInstances) {
+                let locale = 'default';
+                if (lang === 'ru') locale = 'ru';
+                if (lang === 'th') locale = 'th';
+
+                flatpickrInstances.forEach(instance => {
+                    instance.set('locale', locale);
+                });
+            }
+        }
+
+        // Инициализация выбора даты
+        let flatpickrInstances = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация выбора даты
+            const datePickers = document.querySelectorAll('.date-picker');
+            datePickers.forEach(picker => {
+                const instance = flatpickr(picker, {
+                    dateFormat: "d.m.Y",
+                    locale: "ru",
+                    allowInput: true
+                });
+                flatpickrInstances.push(instance);
+            });
+
+            // Инициализация выбора диапазона дат
+            const dateRangePickers = document.querySelectorAll('.date-range-picker');
+            dateRangePickers.forEach(picker => {
+                const instance = flatpickr(picker, {
+                    mode: "range",
+                    dateFormat: "d.m.Y",
+                    locale: "ru",
+                    allowInput: true
+                });
+                flatpickrInstances.push(instance);
+            });
+
+            // Проверяем, есть ли сохраненный язык в localStorage
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && dictionaries[savedLang]) {
+                changeLanguage(savedLang);
+            } else {
+                // Если нет сохраненного языка, используем язык браузера или русский по умолчанию
+                const browserLang = navigator.language.split('-')[0];
+                if (dictionaries[browserLang]) {
+                    changeLanguage(browserLang);
+                } else {
+                    changeLanguage('ru');
+                }
+            }
+        });
+
+        // Сохраняем выбранный язык в localStorage при изменении
+        const originalChangeLanguage = changeLanguage;
+        changeLanguage = function(lang) {
+            originalChangeLanguage(lang);
+            localStorage.setItem('preferredLanguage', lang);
+        };
+    </script>
+</body>
+</html>

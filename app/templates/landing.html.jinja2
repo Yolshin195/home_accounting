@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашняя бухгалтерия - Управляйте финансами легко</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<style>
+:root {
+    --primary-color: #5c6ac4;
+    --primary-light: #f5f7ff;
+    --primary-dark: #4c5aa9;
+    --secondary-color: #6b7280;
+    --success-color: #10b981;
+    --success-light: rgba(16, 185, 129, 0.1);
+    --danger-color: #ef4444;
+    --danger-light: rgba(239, 68, 44, 0.1);
+    --warning-color: #f59e0b;
+    --warning-light: rgba(245, 158, 11, 0.1);
+    --dark-color: #111827;
+    --light-color: #f9fafb;
+    --border-color: #e5e7eb;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --transition: all 0.2s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--dark-color);
+    background-color: #f3f4f6;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.header {
+    background-color: white;
+    box-shadow: var(--card-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-icon {
+    font-size: 1.75rem;
+    color: var(--primary-color);
+}
+
+.brand-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--dark-color);
+    margin: 0;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.5rem;
+}
+
+.nav-item a {
+    display: block;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.nav-item a:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.nav-item a.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.language-selector {
+    display: flex;
+    margin-left: 1rem;
+}
+
+.language-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    opacity: 0.6;
+    transition: var(--transition);
+}
+
+.language-btn.active {
+    opacity: 1;
+    border: 2px solid var(--primary-color);
+}
+
+.language-btn:hover {
+    opacity: 1;
+    background-color: var(--primary-light);
+}
+
+.language-btn img {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    transition: var(--transition);
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    color: white;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #0da571;
+    color: white;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+}
+
+.hero {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, var(--primary-light), #fff);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 600px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--dark-color);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--secondary-color);
+    margin-bottom: 2rem;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hero-image {
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50%;
+    max-width: 650px;
+    z-index: 1;
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.section {
+    padding: 5rem 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    color: var(--secondary-color);
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 3rem;
+}
+
+.features {
+    background-color: white;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+
+.feature-icon {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.feature-icon-1 {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.feature-icon-2 {
+    background-color: var(--success-light);
+    color: var(--success-color);
+}
+
+.feature-icon-3 {
+    background-color: var(--warning-light);
+    color: var(--warning-color);
+}
+
+.feature-icon-4 {
+    background-color: var(--danger-light);
+    color: var(--danger-color);
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.feature-description {
+    color: var(--secondary-color);
+}
+
+.screenshots {
+    background-color: var(--primary-light);
+}
+
+.screenshot-carousel {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.screenshot-item {
+    padding: 1rem;
+}
+
+.screenshot-image {
+    width: 100%;
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+}
+
+.testimonials {
+    background-color: white;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.testimonial-card {
+    background-color: var(--light-color);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+}
+
+.testimonial-content {
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.testimonial-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.testimonial-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.testimonial-info p {
+    font-size: 0.875rem;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+.pricing {
+    background-color: var(--primary-light);
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.pricing-card {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+
+.pricing-popular {
+    position: absolute;
+    top: 1rem;
+    right: -2rem;
+    background-color: var(--success-color);
+    color: white;
+    padding: 0.25rem 2rem;
+    transform: rotate(45deg);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.pricing-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.pricing-price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.pricing-period {
+    color: var(--secondary-color);
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    text-align: left;
+}
+
+.pricing-feature {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pricing-feature i {
+    color: var(--success-color);
+}
+
+.cta {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    text-align: center;
+}
+
+.cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cta-subtitle {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 4rem 0 2rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.footer-brand-icon {
+    font-size: 1.75rem;
+    color: white;
+}
+
+.footer-brand-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: white;
+    margin: 0;
+}
+
+.footer-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1.5rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-link {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.social-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.footer-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-link {
+    margin-bottom: 0.75rem;
+}
+
+.footer-link a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-link a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.875rem;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--dark-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.mobile-menu-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+@media (min-width: 769px) {
+    .mobile-menu-close {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-image {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        width: 100%;
+        max-width: 500px;
+        margin: 3rem auto 0;
+        display: block;
+    }
+
+    .hero {
+        padding: 4rem 0;
+    }
+
+    .section {
+        padding: 4rem 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .navigation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: white;
+        flex-direction: column;
+        justify-content: center;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+    }
+
+    .navigation.active {
+        transform: translateX(0);
+    }
+
+    .nav-list {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .nav-item a {
+        font-size: 1.25rem;
+        padding: 0.75rem 2rem;
+    }
+
+    .language-selector {
+        margin: 2rem 0 0;
+    }
+
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .section {
+        padding: 3rem 0;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+    }
+
+    .feature-grid, .testimonial-grid, .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-title {
+        font-size: 1.75rem;
+    }
+}
+
+/* Animation classes */
+.fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-item {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.stagger-item.active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.stagger-item:nth-child(1) { transition-delay: 0.1s; }
+.stagger-item:nth-child(2) { transition-delay: 0.2s; }
+.stagger-item:nth-child(3) { transition-delay: 0.3s; }
+.stagger-item:nth-child(4) { transition-delay: 0.4s; }
+
+.section {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.hero, .features, .screenshots, .testimonials, .pricing, .cta {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.lang-text {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.testimonial-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    font-size: 1.75rem;
+}
+
+.screenshot-placeholder {
+    width: 100%;
+    height: 400px;
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+    background-color: var(--primary-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+}
+
+.screenshot-placeholder i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.screenshot-placeholder span {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.hero-image-container {
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50%;
+    max-width: 650px;
+    z-index: 1;
+}
+
+.hero-image-placeholder {
+    width: 100%;
+    height: 400px;
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background: linear-gradient(135deg, var(--primary-light), white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 8rem;
+}
+
+@media (max-width: 992px) {
+    .hero-image-container {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        width: 100%;
+        max-width: 500px;
+        margin: 3rem auto 0;
+    }
+}
+</style>
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="header-inner">
+            <div class="brand">
+                <i class="bi bi-wallet2 brand-icon"></i>
+                <h1 class="brand-title" data-lang="app_title">Домашняя бухгалтерия</h1>
+            </div>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="navigation" id="navigation">
+                <button class="mobile-menu-close" id="mobileMenuClose">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+                <nav>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="#features" data-lang="nav_features">Возможности</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#screenshots" data-lang="nav_screenshots">Скриншоты</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#pricing" data-lang="nav_pricing">Тарифы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="auth.html" data-lang="nav_login">Войти</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="language-selector">
+                    <button class="language-btn" onclick="changeLanguage('en')" title="English">
+                        <span class="lang-text">EN</span>
+                    </button>
+                    <button class="language-btn active" onclick="changeLanguage('ru')" title="Русский">
+                        <span class="lang-text">RU</span>
+                    </button>
+                    <button class="language-btn" onclick="changeLanguage('th')" title="ไทย">
+                        <span class="lang-text">TH</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title" data-lang="hero_title">Управляйте финансами легко и эффективно</h1>
+            <p class="hero-subtitle" data-lang="hero_subtitle">Домашняя бухгалтерия поможет вам контролировать доходы и расходы, планировать бюджет и достигать финансовых целей.</p>
+            <div class="hero-cta">
+                <a href="auth.html" class="btn btn-primary btn-lg" data-lang="hero_cta_primary">Начать бесплатно</a>
+                <a href="#features" class="btn btn-outline btn-lg" data-lang="hero_cta_secondary">Узнать больше</a>
+            </div>
+        </div>
+        <div class="hero-image-container">
+            <div class="hero-image-placeholder">
+                <i class="bi bi-graph-up-arrow"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section features" id="features">
+    <div class="container">
+        <h2 class="section-title" data-lang="features_title">Возможности приложения</h2>
+        <p class="section-subtitle" data-lang="features_subtitle">Наше приложение предоставляет все необходимые инструменты для эффективного управления личными финансами</p>
+
+        <div class="feature-grid">
+            <div class="feature-card stagger-item">
+                <div class="feature-icon feature-icon-1">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="feature-title" data-lang="feature_1_title">Учет доходов и расходов</h3>
+                <p class="feature-description" data-lang="feature_1_description">Легко отслеживайте все финансовые операции с удобной категоризацией и детальной аналитикой.</p>
+            </div>
+
+            <div class="feature-card stagger-item">
+                <div class="feature-icon feature-icon-2">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <h3 class="feature-title" data-lang="feature_2_title">Календарь платежей</h3>
+                <p class="feature-description" data-lang="feature_2_description">Планируйте будущие платежи и никогда не пропускайте важные финансовые даты.</p>
+            </div>
+
+            <div class="feature-card stagger-item">
+                <div class="feature-icon feature-icon-3">
+                    <i class="bi bi-pie-chart"></i>
+                </div>
+                <h3 class="feature-title" data-lang="feature_3_title">Наглядная статистика</h3>
+                <p class="feature-description" data-lang="feature_3_description">Анализируйте свои финансы с помощью интерактивных графиков и диаграмм.</p>
+            </div>
+
+            <div class="feature-card stagger-item">
+                <div class="feature-icon feature-icon-4">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h3 class="feature-title" data-lang="feature_4_title">Безопасность данных</h3>
+                <p class="feature-description" data-lang="feature_4_description">Ваши финансовые данные надежно защищены современными методами шифрования.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section screenshots" id="screenshots">
+    <div class="container">
+        <h2 class="section-title" data-lang="screenshots_title">Скриншоты приложения</h2>
+        <p class="section-subtitle" data-lang="screenshots_subtitle">Ознакомьтесь с интерфейсом нашего приложения и оцените его удобство</p>
+
+        <div class="screenshot-carousel">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="screenshot-item">
+                        <div class="screenshot-placeholder">
+                            <i class="bi bi-bar-chart-line"></i>
+                            <span>Аналитика</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="screenshot-item">
+                        <div class="screenshot-placeholder">
+                            <i class="bi bi-calendar-date"></i>
+                            <span>Календарь</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="screenshot-item">
+                        <div class="screenshot-placeholder">
+                            <i class="bi bi-wallet2"></i>
+                            <span>Транзакции</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section testimonials">
+    <div class="container">
+        <h2 class="section-title" data-lang="testimonials_title">Отзывы пользователей</h2>
+        <p class="section-subtitle" data-lang="testimonials_subtitle">Узнайте, что говорят о нашем приложении те, кто уже пользуется им</p>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-content" data-lang="testimonial_1_content">«Это приложение полностью изменило мой подход к управлению финансами. Теперь я точно знаю, на что трачу деньги, и могу эффективно планировать бюджет.»</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4 data-lang="testimonial_1_name">Анна Смирнова</h4>
+                        <p data-lang="testimonial_1_position">Менеджер проектов</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <p class="testimonial-content" data-lang="testimonial_2_content">«Наконец-то нашел удобное приложение для учета семейного бюджета. Интерфейс интуитивно понятный, а функционал покрывает все наши потребности.»</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4 data-lang="testimonial_2_name">Иван Петров</h4>
+                        <p data-lang="testimonial_2_position">Инженер</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <p class="testimonial-content" data-lang="testimonial_3_content">«Благодаря этому приложению я смогла накопить на отпуск мечты. Визуализация целей и трат очень мотивирует экономить.»</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4 data-lang="testimonial_3_name">Мария Иванова</h4>
+                        <p data-lang="testimonial_3_position">Дизайнер</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section pricing" id="pricing">
+    <div class="container">
+        <h2 class="section-title" data-lang="pricing_title">Тарифные планы</h2>
+        <p class="section-subtitle" data-lang="pricing_subtitle">Выберите подходящий тариф для эффективного управления вашими финансами</p>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="pricing-title" data-lang="pricing_basic_title">Базовый</h3>
+                <div class="pricing-price" data-lang="pricing_basic_price">0 ₽</div>
+                <span class="pricing-period" data-lang="pricing_basic_period">Бесплатно навсегда</span>
+
+                <ul class="pricing-features">
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_basic_feature_1">Учет доходов и расходов</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_basic_feature_2">До 5 категорий</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_basic_feature_3">Базовая статистика</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_basic_feature_4">1 пользователь</span>
+                    </li>
+                </ul>
+
+                <a href="auth.html" class="btn btn-outline" data-lang="pricing_basic_cta">Начать бесплатно</a>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-popular" data-lang="pricing_popular">Популярный</div>
+                <h3 class="pricing-title" data-lang="pricing_pro_title">Премиум</h3>
+                <div class="pricing-price" data-lang="pricing_pro_price">299 ₽</div>
+                <span class="pricing-period" data-lang="pricing_pro_period">в месяц</span>
+
+                <ul class="pricing-features">
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_pro_feature_1">Все функции базового тарифа</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_pro_feature_2">Неограниченное количество категорий</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_pro_feature_3">Расширенная аналитика</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_pro_feature_4">Календарь платежей</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_pro_feature_5">Экспорт данных</span>
+                    </li>
+                </ul>
+
+                <a href="auth.html" class="btn btn-primary" data-lang="pricing_pro_cta">Выбрать тариф</a>
+            </div>
+
+            <div class="pricing-card">
+                <h3 class="pricing-title" data-lang="pricing_family_title">Семейный</h3>
+                <div class="pricing-price" data-lang="pricing_family_price">499 ₽</div>
+                <span class="pricing-period" data-lang="pricing_family_period">в месяц</span>
+
+                <ul class="pricing-features">
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_family_feature_1">Все функции тарифа Премиум</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_family_feature_2">До 5 пользователей</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_family_feature_3">Семейный бюджет</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_family_feature_4">Совместное планирование</span>
+                    </li>
+                    <li class="pricing-feature">
+                        <i class="bi bi-check-circle"></i>
+                        <span data-lang="pricing_family_feature_5">Приоритетная поддержка</span>
+                    </li>
+                </ul>
+
+                <a href="auth.html" class="btn btn-outline" data-lang="pricing_family_cta">Выбрать тариф</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section cta">
+    <div class="container">
+        <h2 class="cta-title" data-lang="cta_title">Начните управлять финансами уже сегодня</h2>
+        <p class="cta-subtitle" data-lang="cta_subtitle">Присоединяйтесь к тысячам пользователей, которые уже оптимизировали свои расходы и достигли финансовых целей</p>
+
+        <div class="cta-buttons">
+            <a href="auth.html" class="btn btn-success btn-lg" data-lang="cta_primary">Создать аккаунт</a>
+            <a href="#features" class="btn btn-outline btn-lg" style="color: white; border-color: white;" data-lang="cta_secondary">Узнать больше</a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <i class="bi bi-wallet2 footer-brand-icon"></i>
+                    <h2 class="footer-brand-title" data-lang="app_title">Домашняя бухгалтерия</h2>
+                </div>
+                <p class="footer-description" data-lang="footer_description">Простое и удобное приложение для управления личными финансами и семейным бюджетом.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="footer-title" data-lang="footer_product">Продукт</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#features" data-lang="footer_features">Возможности</a></li>
+                    <li class="footer-link"><a href="#pricing" data-lang="footer_pricing">Тарифы</a></li>
+                    <li class="footer-link"><a href="#" data-lang="footer_download">Скачать</a></li>
+                    <li class="footer-link"><a href="#" data-lang="footer_updates">Обновления</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="footer-title" data-lang="footer_company">Компания</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#" data-lang="footer_about">О нас</a></li>
+                    <li class="footer-link"><a href="#" data-lang="footer_blog">Блог</a></li>
+                    <li class="footer-link"><a href="#" data-lang="footer_careers">Вакансии</a></li>
+                    <li class="footer-link"><a href="#" data-lang="footer_contact">Контакты</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="footer-title" data-lang="footer_support">Поддержка</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#" data-lang="footer_help">Помощь</a></li>
+                    <li class="footer-link"><a href="#" data-lang="footer_faq">FAQ</a></li>
+                    <li class="footer-link"><a href="#" data-lang="footer_docs">Документация</a></li>
+                    <li class="footer-link"><a href="#" data-lang="footer_community">Сообщество</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 <span data-lang="app_title">Домашняя бухгалтерия</span>. <span data-lang="footer_rights">Все права защищены.</span></p>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AOS Animation Library -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- Локализация и скрипты -->
+<script>
+// Словари для разных языков
+const dictionaries = {
+    ru: {
+        // Общие
+        app_title: "Домашняя бухгалтерия",
+        nav_features: "Возможности",
+        nav_screenshots: "Скриншоты",
+        nav_pricing: "Тарифы",
+        nav_login: "Войти",
+
+        // Герой секция
+        hero_title: "Управляйте финансами легко и эффективно",
+        hero_subtitle: "Домашняя бухгалтерия поможет вам контролировать доходы и расходы, планировать бюджет и достигать финансовых целей.",
+        hero_cta_primary: "Начать бесплатно",
+        hero_cta_secondary: "Узнать больше",
+
+        // Возможности
+        features_title: "Возможности приложения",
+        features_subtitle: "Наше приложение предоставляет все необходимые инструменты для эффективного управления личными финансами",
+        feature_1_title: "Учет доходов и расходов",
+        feature_1_description: "Легко отслеживайте все финансовые операции с удобной категоризацией и детальной аналитикой.",
+        feature_2_title: "Календарь платежей",
+        feature_2_description: "Планируйте будущие платежи и никогда не пропускайте важные финансовые даты.",
+        feature_3_title: "Наглядная статистика",
+        feature_3_description: "Анализируйте свои финансы с помощью интерактивных графиков и диаграмм.",
+        feature_4_title: "Безопасность данных",
+        feature_4_description: "Ваши финансовые данные надежно защищены современными методами шифрования.",
+
+        // Скриншоты
+        screenshots_title: "Скриншоты приложения",
+        screenshots_subtitle: "Ознакомьтесь с интерфейсом нашего приложения и оцените его удобство",
+
+        // Отзывы
+        testimonials_title: "Отзывы пользователей",
+        testimonials_subtitle: "Узнайте, что говорят о нашем приложении те, кто уже пользуется им",
+        testimonial_1_content: "«Это приложение полностью изменило мой подход к управлению финансами. Теперь я точно знаю, на что трачу деньги, и могу эффективно планировать бюджет.»",
+        testimonial_1_name: "Анна Смирнова",
+        testimonial_1_position: "Менеджер проектов",
+        testimonial_2_content: "«Наконец-то нашел удобное приложение для учета семейного бюджета. Интерфейс интуитивно понятный, а функционал покрывает все наши потребности.»",
+        testimonial_2_name: "Иван Петров",
+        testimonial_2_position: "Инженер",
+        testimonial_3_content: "«Благодаря этому приложению я смогла накопить на отпуск мечты. Визуализация целей и трат очень мотивирует экономить.»",
+        testimonial_3_name: "Мария Иванова",
+        testimonial_3_position: "Дизайнер",
+
+        // Тарифы
+        pricing_title: "Тарифные планы",
+        pricing_subtitle: "Выберите подходящий тариф для эффективного управления вашими финансами",
+        pricing_popular: "Популярный",
+
+        pricing_basic_title: "Базовый",
+        pricing_basic_price: "0 ₽",
+        pricing_basic_period: "Бесплатно навсегда",
+        pricing_basic_feature_1: "Учет доходов и расходов",
+        pricing_basic_feature_2: "До 5 категорий",
+        pricing_basic_feature_3: "Базовая статистика",
+        pricing_basic_feature_4: "1 пользователь",
+        pricing_basic_cta: "Начать бесплатно",
+
+        pricing_pro_title: "Премиум",
+        pricing_pro_price: "299 ₽",
+        pricing_pro_period: "в месяц",
+        pricing_pro_feature_1: "Все функции базового тарифа",
+        pricing_pro_feature_2: "Неограниченное количество категорий",
+        pricing_pro_feature_3: "Расширенная аналитика",
+        pricing_pro_feature_4: "Календарь платежей",
+        pricing_pro_feature_5: "Экспорт данных",
+        pricing_pro_cta: "Выбрать тариф",
+
+        pricing_family_title: "Семейный",
+        pricing_family_price: "499 ₽",
+        pricing_family_period: "в месяц",
+        pricing_family_feature_1: "Все функции тарифа Премиум",
+        pricing_family_feature_2: "До 5 пользователей",
+        pricing_family_feature_3: "Семейный бюджет",
+        pricing_family_feature_4: "Совместное планирование",
+        pricing_family_feature_5: "Приоритетная поддержка",
+        pricing_family_cta: "Выбрать тариф",
+
+        // CTA
+        cta_title: "Начните управлять финансами уже сегодня",
+        cta_subtitle: "Присоединяйтесь к тысячам пользователей, которые уже оптимизировали свои расходы и достигли финансовых целей",
+        cta_primary: "Создать аккаунт",
+        cta_secondary: "Узнать больше",
+
+        // Футер
+        footer_description: "Простое и удобное приложение для управления личными финансами и семейным бюджетом.",
+        footer_product: "Продукт",
+        footer_features: "Возможности",
+        footer_pricing: "Тарифы",
+        footer_download: "Скачать",
+        footer_updates: "Обновления",
+        footer_company: "Компания",
+        footer_about: "О нас",
+        footer_blog: "Блог",
+        footer_careers: "Вакансии",
+        footer_contact: "Контакты",
+        footer_support: "Поддержка",
+        footer_help: "Помощь",
+        footer_faq: "FAQ",
+        footer_docs: "Документация",
+        footer_community: "Сообщество",
+        footer_rights: "Все права защищены."
+    },
+    en: {
+        // General
+        app_title: "Home Accounting",
+        nav_features: "Features",
+        nav_screenshots: "Screenshots",
+        nav_pricing: "Pricing",
+        nav_login: "Login",
+
+        // Hero section
+        hero_title: "Manage Your Finances Easily and Effectively",
+        hero_subtitle: "Home Accounting helps you control your income and expenses, plan your budget, and achieve your financial goals.",
+        hero_cta_primary: "Start for Free",
+        hero_cta_secondary: "Learn More",
+
+        // Features
+        features_title: "App Features",
+        features_subtitle: "Our application provides all the necessary tools for effective personal finance management",
+        feature_1_title: "Income and Expense Tracking",
+        feature_1_description: "Easily track all financial transactions with convenient categorization and detailed analytics.",
+        feature_2_title: "Payment Calendar",
+        feature_2_description: "Plan future payments and never miss important financial dates.",
+        feature_3_title: "Visual Statistics",
+        feature_3_description: "Analyze your finances with interactive charts and graphs.",
+        feature_4_title: "Data Security",
+        feature_4_description: "Your financial data is securely protected by modern encryption methods.",
+
+        // Screenshots
+        screenshots_title: "App Screenshots",
+        screenshots_subtitle: "Check out our application interface and see how convenient it is",
+
+        // Testimonials
+        testimonials_title: "User Testimonials",
+        testimonials_subtitle: "Find out what people who already use our app are saying",
+        testimonial_1_content: "\"This app has completely changed my approach to financial management. Now I know exactly what I'm spending money on and can effectively plan my budget.\"",
+        testimonial_1_name: "Anna Smith",
+        testimonial_1_position: "Project Manager",
+        testimonial_2_content: "\"I finally found a convenient app for family budget accounting. The interface is intuitive, and the functionality covers all our needs.\"",
+        testimonial_2_name: "John Peterson",
+        testimonial_2_position: "Engineer",
+        testimonial_3_content: "\"Thanks to this app, I was able to save for my dream vacation. The visualization of goals and expenses really motivates me to save.\"",
+        testimonial_3_name: "Mary Johnson",
+        testimonial_3_position: "Designer",
+
+        // Pricing
+        pricing_title: "Pricing Plans",
+        pricing_subtitle: "Choose the right plan for effective management of your finances",
+        pricing_popular: "Popular",
+
+        pricing_basic_title: "Basic",
+        pricing_basic_price: "$0",
+        pricing_basic_period: "Free forever",
+        pricing_basic_feature_1: "Income and expense tracking",
+        pricing_basic_feature_2: "Up to 5 categories",
+        pricing_basic_feature_3: "Basic statistics",
+        pricing_basic_feature_4: "1 user",
+        pricing_basic_cta: "Start for Free",
+
+        pricing_pro_title: "Premium",
+        pricing_pro_price: "$9.99",
+        pricing_pro_period: "per month",
+        pricing_pro_feature_1: "All Basic plan features",
+        pricing_pro_feature_2: "Unlimited categories",
+        pricing_pro_feature_3: "Advanced analytics",
+        pricing_pro_feature_4: "Payment calendar",
+        pricing_pro_feature_5: "Data export",
+        pricing_pro_cta: "Choose Plan",
+
+        pricing_family_title: "Family",
+        pricing_family_price: "$14.99",
+        pricing_family_period: "per month",
+        pricing_family_feature_1: "All Premium plan features",
+        pricing_family_feature_2: "Up to 5 users",
+        pricing_family_feature_3: "Family budget",
+        pricing_family_feature_4: "Collaborative planning",
+        pricing_family_feature_5: "Priority support",
+        pricing_family_cta: "Choose Plan",
+
+        // CTA
+        cta_title: "Start Managing Your Finances Today",
+        cta_subtitle: "Join thousands of users who have already optimized their expenses and achieved their financial goals",
+        cta_primary: "Create Account",
+        cta_secondary: "Learn More",
+
+        // Footer
+        footer_description: "A simple and convenient application for managing personal finances and family budget.",
+        footer_product: "Product",
+        footer_features: "Features",
+        footer_pricing: "Pricing",
+        footer_download: "Download",
+        footer_updates: "Updates",
+        footer_company: "Company",
+        footer_about: "About Us",
+        footer_blog: "Blog",
+        footer_careers: "Careers",
+        footer_contact: "Contact",
+        footer_support: "Support",
+        footer_help: "Help",
+        footer_faq: "FAQ",
+        footer_docs: "Documentation",
+        footer_community: "Community",
+        footer_rights: "All rights reserved."
+    },
+    th: {
+        // ทั่วไป
+        app_title: "บัญชีครัวเรือน",
+        nav_features: "คุณสมบัติ",
+        nav_screenshots: "ภาพหน้าจอ",
+        nav_pricing: "ราคา",
+        nav_login: "เข้าสู่ระบบ",
+
+        // ส่วนฮีโร่
+        hero_title: "จัดการการเงินของคุณได้อย่างง่ายดายและมีประสิทธิภาพ",
+        hero_subtitle: "บัญชีครัวเรือนช่วยให้คุณควบคุมรายรับและรายจ่าย วางแผนงบประมาณ และบรรลุเป้าหมายทางการเงิน",
+        hero_cta_primary: "เริ่มต้นฟรี",
+        hero_cta_secondary: "เรียนรู้เพิ่มเติม",
+
+        // คุณสมบัติ
+        features_title: "คุณสมบัติของแอป",
+        features_subtitle: "แอปพลิเคชันของเราให้เครื่องมือที่จำเป็นทั้งหมดสำหรับการจัดการการเงินส่วนบุคคลอย่างมีประสิทธิภาพ",
+        feature_1_title: "การติดตามรายรับและรายจ่าย",
+        feature_1_description: "ติดตามธุรกรรมทางการเงินทั้งหมดได้อย่างง่ายดายด้วยการจัดหมวดหมู่ที่สะดวกและการวิเคราะห์โดยละเอียด",
+        feature_2_title: "ปฏิทินการชำระเงิน",
+        feature_2_description: "วางแผนการชำระเงินในอนาคตและไม่พลาดวันที่สำคัญทางการเงิน",
+        feature_3_title: "สถิติที่มองเห็นได้",
+        feature_3_description: "วิเคราะห์การเงินของคุณด้วยแผนภูมิและกราฟแบบโต้ตอบ",
+        feature_4_title: "ความปลอดภัยของข้อมูล",
+        feature_4_description: "ข้อมูลทางการเงินของคุณได้รับการปกป้องอย่างปลอดภัยด้วยวิธีการเข้ารหัสสมัยใหม่",
+
+        // ภาพหน้าจอ
+        screenshots_title: "ภาพหน้าจอของแอป",
+        screenshots_subtitle: "ตรวจสอบอินเทอร์เฟซของแอปพลิเคชันของเราและดูว่าสะดวกแค่ไหน",
+
+        // ความคิดเห็น
+        testimonials_title: "ความคิดเห็นของผู้ใช้",
+        testimonials_subtitle: "ค้นหาว่าผู้ที่ใช้แอปของเราแล้วพูดอะไร",
+        testimonial_1_content: "\"แอปนี้เปลี่ยนวิธีการจัดการการเงินของฉันอย่างสิ้นเชิง ตอนนี้ฉันรู้แน่ชัดว่าฉันใช้จ่ายเงินไปกับอะไรและสามารถวางแผนงบประมาณได้อย่างมีประสิทธิภาพ\"",
+        testimonial_1_name: "อันนา สมิธ",
+        testimonial_1_position: "ผู้จัดการโครงการ",
+        testimonial_2_content: "\"ในที่สุดฉันก็พบแอปที่สะดวกสำหรับการทำบัญชีงบประมาณครอบครัว อินเทอร์เฟซใช้งานง่ายและฟังก์ชันการทำงานครอบคลุมความต้องการทั้งหมดของเรา\"",
+        testimonial_2_name: "จอห์น ปีเตอร์สัน",
+        testimonial_2_position: "วิศวกร",
+        testimonial_3_content: "\"ขอบคุณแอปนี้ ฉันสามารถเก็บเงินสำหรับวันหยุดในฝันของฉัน การแสดงภาพของเป้าหมายและค่าใช้จ่ายจริงๆ แล้วกระตุ้นให้ฉันประหยัด\"",
+        testimonial_3_name: "แมรี่ จอห์นสัน",
+        testimonial_3_position: "นักออกแบบ",
+
+        // ราคา
+        pricing_title: "แผนราคา",
+        pricing_subtitle: "เลือกแผนที่เหมาะสมสำหรับการจัดการการเงินของคุณอย่างมีประสิทธิภาพ",
+        pricing_popular: "ยอดนิยม",
+
+        pricing_basic_title: "พื้นฐาน",
+        pricing_basic_price: "฿0",
+        pricing_basic_period: "ฟรีตลอดไป",
+        pricing_basic_feature_1: "การติดตามรายรับและรายจ่าย",
+        pricing_basic_feature_2: "สูงสุด 5 หมวดหมู่",
+        pricing_basic_feature_3: "สถิติพื้นฐาน",
+        pricing_basic_feature_4: "1 ผู้ใช้",
+        pricing_basic_cta: "เริ่มต้นฟรี",
+
+        pricing_pro_title: "พรีเมียม",
+        pricing_pro_price: "฿299",
+        pricing_pro_period: "ต่อเดือน",
+        pricing_pro_feature_1: "คุณสมบัติทั้งหมดของแผนพื้นฐาน",
+        pricing_pro_feature_2: "หมวดหมู่ไม่จำกัด",
+        pricing_pro_feature_3: "การวิเคราะห์ขั้นสูง",
+        pricing_pro_feature_4: "ปฏิทินการชำระเงิน",
+        pricing_pro_feature_5: "การส่งออกข้อมูล",
+        pricing_pro_cta: "เลือกแผน",
+
+        pricing_family_title: "ครอบครัว",
+        pricing_family_price: "฿499",
+        pricing_family_period: "ต่อเดือน",
+        pricing_family_feature_1: "คุณสมบัติทั้งหมดของแผนพรีเมียม",
+        pricing_family_feature_2: "สูงสุด 5 ผู้ใช้",
+        pricing_family_feature_3: "งบประมาณครอบครัว",
+        pricing_family_feature_4: "การวางแผนร่วมกัน",
+        pricing_family_feature_5: "การสนับสนุนที่มีความสำคัญ",
+        pricing_family_cta: "เลือกแผน",
+
+        // CTA
+        cta_title: "เริ่มจัดการการเงินของคุณวันนี้",
+        cta_subtitle: "เข้าร่วมกับผู้ใช้หลายพันคนที่ได้ปรับค่าใช้จ่ายให้เหมาะสมและบรรลุเป้าหมายทางการเงินแล้ว",
+        cta_primary: "สร้างบัญชี",
+        cta_secondary: "เรียนรู้เพิ่มเติม",
+
+        // ส่วนท้าย
+        footer_description: "แอปพลิเคชันที่เรียบง่ายและสะดวกสำหรับการจัดการการเงินส่วนบุคคลและงบประมาณครอบครัว",
+        footer_product: "ผลิตภัณฑ์",
+        footer_features: "คุณสมบัติ",
+        footer_pricing: "ราคา",
+        footer_download: "ดาวน์โหลด",
+        footer_updates: "อัปเดต",
+        footer_company: "บริษัท",
+        footer_about: "เกี่ยวกับเรา",
+        footer_blog: "บล็อก",
+        footer_careers: "ตำแหน่งงาน",
+        footer_contact: "ติดต่อ",
+        footer_support: "การสนับสนุน",
+        footer_help: "ช่วยเหลือ",
+        footer_faq: "คำถามที่พบบ่อย",
+        footer_docs: "เอกสาร",
+        footer_community: "ชุมชน",
+        footer_rights: "สงวนลิขสิทธิ์ทั้งหมด"
+    }
+};
+
+// Текущий язык (по умолчанию русский)
+let currentLang = 'ru';
+
+// Функция для изменения языка
+function changeLanguage(lang) {
+    if (!dictionaries[lang]) return;
+
+    currentLang = lang;
+
+    // Обновляем атрибут lang у html
+    document.documentElement.lang = lang;
+
+    // Обновляем активную кнопку языка
+    document.querySelectorAll('.language-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+    // Обновляем все элементы с атрибутом data-lang
+    document.querySelectorAll('[data-lang]').forEach(element => {
+        const key = element.getAttribute('data-lang');
+        if (dictionaries[lang][key]) {
+            element.textContent = dictionaries[lang][key];
+        }
+    });
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем, есть ли сохраненный язык в localStorage
+    const savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang && dictionaries[savedLang]) {
+        changeLanguage(savedLang);
+    } else {
+        // Если нет сохраненного языка, используем язык браузера или русский по умолчанию
+        const browserLang = navigator.language.split('-')[0];
+        if (dictionaries[browserLang]) {
+            changeLanguage(browserLang);
+        } else {
+            changeLanguage('ru');
+        }
+    }
+
+    // Инициализация AOS (Animate on Scroll)
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+    });
+
+    // Активация всех элементов с классом stagger-item
+    setTimeout(function() {
+        document.querySelectorAll('.stagger-item').forEach(item => {
+            item.classList.add('active');
+        });
+    }, 100);
+
+    // Мобильное меню
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+    const navigation = document.getElementById('navigation');
+
+    if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', function() {
+            navigation.classList.add('active');
+        });
+    }
+
+    if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', function() {
+            navigation.classList.remove('active');
+        });
+    }
+
+    // Закрытие мобильного меню при клике на ссылку
+    document.querySelectorAll('.nav-item a').forEach(link => {
+        link.addEventListener('click', function() {
+            navigation.classList.remove('active');
+        });
+    });
+
+    // Плавная прокрутка к якорям
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Сохраняем выбранный язык в localStorage при изменении
+    window.changeLanguage = function(lang) {
+        if (!dictionaries[lang]) return;
+
+        currentLang = lang;
+
+        // Обновляем атрибут lang у html
+        document.documentElement.lang = lang;
+
+        // Обновляем активную кнопку языка
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+        // Обновляем все элементы с атрибутом data-lang
+        document.querySelectorAll('[data-lang]').forEach(element => {
+            const key = element.getAttribute('data-lang');
+            if (dictionaries[lang][key]) {
+                element.textContent = dictionaries[lang][key];
+            }
+        });
+
+        localStorage.setItem('preferredLanguage', lang);
+    };
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Авторизация - Домашняя бухгалтерия</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary-color: #5c6ac4;
+        --primary-light: #f5f7ff;
+        --secondary-color: #6b7280;
+        --success-color: #10b981;
+        --danger-color: #ef4444;
+        --dark-color: #111827;
+        --light-color: #f9fafb;
+        --border-color: #e5e7eb;
+        --body-bg: #f3f4f6;
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        --transition: all 0.2s ease;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        color: var(--dark-color);
+        background-color: var(--body-bg);
+        line-height: 1.5;
+    }
+
+    .app-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1.5rem;
+    }
+
+    .header {
+        background-color: white;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .brand-icon {
+        font-size: 1.75rem;
+        color: var(--primary-color);
+    }
+
+    .brand-title {
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: var(--dark-color);
+        margin: 0;
+    }
+
+    .navigation {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-list {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 0.5rem;
+    }
+
+    .nav-item a {
+        display: block;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        color: var(--secondary-color);
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .nav-item a:hover {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+    }
+
+    .nav-item a.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .language-selector {
+        display: flex;
+        margin-left: 1rem;
+    }
+
+    .language-btn {
+        background: none;
+        border: none;
+        padding: 0.25rem;
+        border-radius: 0.25rem;
+        opacity: 0.6;
+        transition: var(--transition);
+    }
+
+    .language-btn.active {
+        opacity: 1;
+        border: 2px solid var(--primary-color);
+    }
+
+    .language-btn:hover {
+        opacity: 1;
+        background-color: var(--primary-light);
+    }
+
+    .language-btn img {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+    }
+
+    .auth-container {
+        max-width: 960px;
+        margin: 2rem auto;
+    }
+
+    .auth-card {
+        background-color: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+    }
+
+    .auth-image {
+        background-image: url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1011&q=80');
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        border-radius: 0 16px 16px 0;
+    }
+
+    .auth-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .auth-header h2 {
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .auth-body {
+        padding: 2rem;
+    }
+
+    .auth-tabs {
+        display: flex;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .auth-tab {
+        padding: 1rem 1.5rem;
+        border-bottom: 3px solid transparent;
+        font-weight: 500;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .auth-tab.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+    }
+
+    .auth-tab:hover {
+        color: var(--primary-color);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: var(--secondary-color);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(92, 106, 196, 0.2);
+    }
+
+    .password-field {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--secondary-color);
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        transition: var(--transition);
+        cursor: pointer;
+        border: none;
+        width: 100%;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #4c5aa9;
+    }
+
+    .btn-success {
+        background-color: var(--success-color);
+        color: white;
+    }
+
+    .btn-success:hover {
+        background-color: #0da571;
+    }
+
+    .btn-secondary {
+        background-color: #e5e7eb;
+        color: var(--dark-color);
+    }
+
+    .btn-secondary:hover {
+        background-color: #d1d5db;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-check-input {
+        width: 1rem;
+        height: 1rem;
+        margin-top: 0;
+    }
+
+    .form-text {
+        font-size: 0.875rem;
+        color: var(--secondary-color);
+        margin-top: 0.25rem;
+    }
+
+    .form-divider {
+        display: flex;
+        align-items: center;
+        margin: 1.5rem 0;
+        color: var(--secondary-color);
+    }
+
+    .form-divider::before,
+    .form-divider::after {
+        content: "";
+        flex: 1;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .form-divider-text {
+        padding: 0 1rem;
+    }
+
+    .social-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        color: white;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .btn-google {
+        background-color: #DB4437;
+    }
+
+    .btn-google:hover {
+        background-color: #c33a2e;
+    }
+
+    .btn-facebook {
+        background-color: #4267B2;
+    }
+
+    .btn-facebook:hover {
+        background-color: #385898;
+    }
+
+    .btn-apple {
+        background-color: #000000;
+    }
+
+    .btn-apple:hover {
+        background-color: #222222;
+    }
+
+    .auth-footer {
+        text-align: center;
+        padding: 1rem 0;
+        color: var(--secondary-color);
+        font-size: 0.875rem;
+    }
+
+    .forgot-password {
+        display: block;
+        text-align: center;
+        margin-top: 1rem;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+    .modal-content {
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1.5rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        background-color: var(--light-color);
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--secondary-color);
+        padding: 1.5rem 0;
+        border-top: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 768px) {
+        .auth-image {
+            height: 200px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .social-buttons {
+            grid-template-columns: 1fr;
+        }
+
+        .header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .navigation {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="app-container">
+    <header class="header">
+        <div class="brand">
+            <i class="bi bi-wallet2 brand-icon"></i>
+            <h1 class="brand-title" data-lang="app_title">Домашняя бухгалтерия</h1>
+        </div>
+        <div class="navigation">
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/v2/dashboard" data-lang="nav_dashboard">Дашборд</a>
+                    </li>
+                     <li class="nav-item">
+                        <a href="/v2/calendar" data-lang="nav_calendar">Календарь</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/v2/reference/category" data-lang="nav_categories">Категории</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/v2" data-lang="nav_transactions">Операции</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/v2/auth" class="active" data-lang="nav_account">Аккаунт</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="language-selector">
+                <button class="language-btn" onclick="changeLanguage('en')" title="English">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
+                </button>
+                <button class="language-btn active" onclick="changeLanguage('ru')" title="Русский">
+                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
+                </button>
+                <button class="language-btn" onclick="changeLanguage('th')" title="ไทย">
+                    <img src="https://flagcdn.com/w40/th.png" alt="ไทย">
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <div class="auth-header">
+                        <h2 class="fs-4" data-lang="auth_welcome">Добро пожаловать в Домашнюю бухгалтерию</h2>
+                    </div>
+                    <div class="auth-body">
+                        <div class="auth-tabs">
+                            <div class="auth-tab active" id="login-tab" onclick="switchTab('login')" data-lang="login_tab">Вход</div>
+                            <div class="auth-tab" id="register-tab" onclick="switchTab('register')" data-lang="register_tab">Регистрация</div>
+                        </div>
+
+                        <!-- Login Form -->
+                        <div class="tab-content active" id="login">
+                            <form id="loginForm" action="/v2/login/form" method="post">
+                                <div class="form-group">
+                                    <label for="loginEmail" class="form-label" data-lang="email">Email</label>
+                                    <input name="email" type="email" class="form-control" id="loginEmail" placeholder="name@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="loginPassword" class="form-label" data-lang="password">Пароль</label>
+                                    <div class="password-field">
+                                        <input name="password" type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+                                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                                            <i class="bi bi-eye"></i>
+                                            <span class="d-none d-md-inline" data-lang="show_password">Показать</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe" data-lang="remember_me">Запомнить меня</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary" data-lang="login_button">Войти</button>
+                                <a href="#" class="forgot-password" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" data-lang="forgot_password">Забыли пароль?</a>
+                            </form>
+
+                            <div class="form-divider">
+                                <span class="form-divider-text" data-lang="or_login_with">или войдите с помощью</span>
+                            </div>
+
+                            <div class="social-buttons">
+                                <a href="#" class="btn-social btn-google">
+                                    <i class="bi bi-google"></i>
+                                    <span data-lang="google">Google</span>
+                                </a>
+                                <a href="#" class="btn-social btn-facebook">
+                                    <i class="bi bi-facebook"></i>
+                                    <span data-lang="facebook">Facebook</span>
+                                </a>
+                                <a href="#" class="btn-social btn-apple">
+                                    <i class="bi bi-apple"></i>
+                                    <span data-lang="apple">Apple</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Register Form -->
+                        <div class="tab-content" id="register">
+                            <form id="registerForm" action="/v2/register/form" method="post">
+                                <div class="form-group">
+                                    <label for="registerEmail" class="form-label" data-lang="email">Email</label>
+                                    <input name="email" type="email" class="form-control" id="registerEmail" placeholder="name@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerPassword" class="form-label" data-lang="password">Пароль</label>
+                                    <div class="password-field">
+                                        <input name="password" type="password" class="form-control" id="registerPassword" placeholder="••••••••" required>
+                                        <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')">
+                                            <i class="bi bi-eye"></i>
+                                            <span class="d-none d-md-inline" data-lang="show_password">Показать</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword" class="form-label" data-lang="confirm_password">Подтвердите пароль</label>
+                                    <div class="password-field">
+                                        <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••" required>
+                                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                            <i class="bi bi-eye"></i>
+                                            <span class="d-none d-md-inline" data-lang="show_password">Показать</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        <span data-lang="agree_terms">Я согласен с</span> <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" data-lang="terms_link">условиями использования</a>
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-success" data-lang="register_button">Зарегистрироваться</button>
+                            </form>
+                        </div>
+
+                        <div class="auth-footer">
+                            <p data-lang="auth_footer">Регистрируясь, вы получаете доступ к полному функционалу приложения и возможность синхронизации данных между устройствами.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-none d-md-block">
+                    <div class="auth-image"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для восстановления пароля -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordModalLabel" data-lang="reset_password_title">Восстановление пароля</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p data-lang="reset_password_text">Введите ваш email, и мы отправим вам инструкции по восстановлению пароля.</p>
+                    <form id="resetPasswordForm">
+                        <div class="form-group">
+                            <label for="resetEmail" class="form-label" data-lang="email">Email</label>
+                            <input type="email" class="form-control" id="resetEmail" placeholder="name@example.com" required>
+                        </div>
+                        <div class="d-grid mt-3">
+                            <button type="submit" class="btn btn-primary" data-lang="send_instructions">Отправить инструкции</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для условий использования -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel" data-lang="terms_title">Условия использования</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 data-lang="terms_welcome">Добро пожаловать в Домашнюю бухгалтерию!</h5>
+                    <p data-lang="terms_intro">Используя наше приложение, вы соглашаетесь с нижеследующими условиями. Пожалуйста, внимательно прочитайте их.</p>
+
+                    <h6 data-lang="terms_account">1. Учетная запись</h6>
+                    <p data-lang="terms_account_text">Вы несете ответственность за сохранение конфиденциальности вашей учетной записи и пароля. Вы соглашаетесь уведомить нас о любом несанкционированном использовании вашей учетной записи.</p>
+
+                    <h6 data-lang="terms_privacy">2. Конфиденциальность</h6>
+                    <p data-lang="terms_privacy_text">Мы уважаем вашу конфиденциальность и обрабатываем ваши данные в соответствии с нашей Политикой конфиденциальности. Ваши финансовые данные хранятся в зашифрованном виде и не передаются третьим лицам.</p>
+
+                    <h6 data-lang="terms_data">3. Данные пользователя</h6>
+                    <p data-lang="terms_data_text">Вы сохраняете все права на ваши данные. Мы не используем ваши финансовые данные для каких-либо целей, кроме предоставления вам услуг приложения.</p>
+
+                    <h6 data-lang="terms_changes">4. Изменения в условиях</h6>
+                    <p data-lang="terms_changes_text">Мы оставляем за собой право изменять эти условия в любое время. Мы уведомим вас о любых существенных изменениях через электронную почту или уведомление в приложении.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-lang="close">Закрыть</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-lang="accept">Принять</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2025 <span data-lang="app_title">Домашняя бухгалтерия</span>
+    </footer>
+</div>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Локализация -->
+<script>
+    // Словари для разных языков
+    const dictionaries = {
+        ru: {
+            // Общие
+            app_title: "Домашняя бухгалтерия",
+            nav_categories: "Категории",
+            nav_transactions: "Операции",
+            nav_account: "Аккаунт",
+            close: "Закрыть",
+            accept: "Принять",
+
+            // Авторизация
+            auth_welcome: "Добро пожаловать в Домашнюю бухгалтерию",
+            login_tab: "Вход",
+            register_tab: "Регистрация",
+            email: "Email",
+            password: "Пароль",
+            show_password: "Показать",
+            hide_password: "Скрыть",
+            remember_me: "Запомнить меня",
+            login_button: "Войти",
+            forgot_password: "Забыли пароль?",
+            or_login_with: "или войдите с помощью",
+            google: "Google",
+            facebook: "Facebook",
+            apple: "Apple",
+
+            // Регистрация
+            first_name: "Имя",
+            last_name: "Фамилия",
+            confirm_password: "Подтвердите пароль",
+            agree_terms: "Я согласен с",
+            terms_link: "условиями использования",
+            register_button: "Зарегистрироваться",
+            auth_footer: "Регистрируясь, вы получаете доступ к полному функционалу приложения и возможность синхронизации данных между устройствами.",
+
+            // Восстановление пароля
+            reset_password_title: "Восстановление пароля",
+            reset_password_text: "Введите ваш email, и мы отправим вам инструкции по восстановлению пароля.",
+            send_instructions: "Отправить инструкции",
+
+            // Условия использования
+            terms_title: "Условия использования",
+            terms_welcome: "Добро пожаловать в Домашнюю бухгалтерию!",
+            terms_intro: "Используя наше приложение, вы соглашаетесь с нижеследующими условиями. Пожалуйста, внимательно прочитайте их.",
+            terms_account: "1. Учетная запись",
+            terms_account_text: "Вы несете ответственность за сохранение конфиденциальности вашей учетной записи и пароля. Вы соглашаетесь уведомить нас о любом несанкционированном использовании вашей учетной записи.",
+            terms_privacy: "2. Конфиденциальность",
+            terms_privacy_text: "Мы уважаем вашу конфиденциальность и обрабатываем ваши данные в соответствии с нашей Политикой конфиденциальности. Ваши финансовые данные хранятся в зашифрованном виде и не передаются третьим лицам.",
+            terms_data: "3. Данные пользователя",
+            terms_data_text: "Вы сохраняете все права на ваши данные. Мы не используем ваши финансовые данные для каких-либо целей, кроме предоставления вам услуг приложения.",
+            terms_changes: "4. Изменения в условиях",
+            terms_changes_text: "Мы оставляем за собой право изменять эти условия в любое время. Мы уведомим вас о любых существенных изменениях через электронную почту или уведомление в приложении."
+        },
+        en: {
+            // General
+            app_title: "Home Accounting",
+            nav_categories: "Categories",
+            nav_transactions: "Transactions",
+            nav_account: "Account",
+            close: "Close",
+            accept: "Accept",
+
+            // Authentication
+            auth_welcome: "Welcome to Home Accounting",
+            login_tab: "Login",
+            register_tab: "Register",
+            email: "Email",
+            password: "Password",
+            show_password: "Show",
+            hide_password: "Hide",
+            remember_me: "Remember me",
+            login_button: "Login",
+            forgot_password: "Forgot password?",
+            or_login_with: "or login with",
+            google: "Google",
+            facebook: "Facebook",
+            apple: "Apple",
+
+            // Registration
+            first_name: "First Name",
+            last_name: "Last Name",
+            confirm_password: "Confirm Password",
+            agree_terms: "I agree to the",
+            terms_link: "Terms of Service",
+            register_button: "Register",
+            auth_footer: "By registering, you get access to the full functionality of the application and the ability to synchronize data between devices.",
+
+            // Password Reset
+            reset_password_title: "Reset Password",
+            reset_password_text: "Enter your email and we will send you instructions to reset your password.",
+            send_instructions: "Send Instructions",
+
+            // Terms of Service
+            terms_title: "Terms of Service",
+            terms_welcome: "Welcome to Home Accounting!",
+            terms_intro: "By using our application, you agree to the following terms. Please read them carefully.",
+            terms_account: "1. Account",
+            terms_account_text: "You are responsible for maintaining the confidentiality of your account and password. You agree to notify us of any unauthorized use of your account.",
+            terms_privacy: "2. Privacy",
+            terms_privacy_text: "We respect your privacy and process your data in accordance with our Privacy Policy. Your financial data is stored in encrypted form and is not shared with third parties.",
+            terms_data: "3. User Data",
+            terms_data_text: "You retain all rights to your data. We do not use your financial data for any purpose other than providing you with application services.",
+            terms_changes: "4. Changes to Terms",
+            terms_changes_text: "We reserve the right to modify these terms at any time. We will notify you of any material changes via email or notification in the application."
+        },
+        th: {
+            // ทั่วไป
+            app_title: "บัญชีครัวเรือน",
+            nav_categories: "หมวดหมู่",
+            nav_transactions: "ธุรกรรม",
+            nav_account: "บัญชีผู้ใช้",
+            close: "ปิด",
+            accept: "ยอมรับ",
+
+            // การยืนยันตัวตน
+            auth_welcome: "ยินดีต้อนรับสู่บัญชีครัวเรือน",
+            login_tab: "เข้าสู่ระบบ",
+            register_tab: "ลงทะเบียน",
+            email: "อีเมล",
+            password: "รหัสผ่าน",
+            show_password: "แสดง",
+            hide_password: "ซ่อน",
+            remember_me: "จดจำฉัน",
+            login_button: "เข้าสู่ระบบ",
+            forgot_password: "ลืมรหัสผ่าน?",
+            or_login_with: "หรือเข้าสู่ระบบด้วย",
+            google: "Google",
+            facebook: "Facebook",
+            apple: "Apple",
+
+            // การลงทะเบียน
+            first_name: "ชื่อ",
+            last_name: "นามสกุล",
+            confirm_password: "ยืนยันรหัสผ่าน",
+            agree_terms: "ฉันยอมรับ",
+            terms_link: "เงื่อนไขการใช้บริการ",
+            register_button: "ลงทะเบียน",
+            auth_footer: "เมื่อลงทะเบียน คุณจะได้รับสิทธิ์เข้าถึงฟังก์ชันการทำงานทั้งหมดของแอปพลิเคชันและความสามารถในการซิงโครไนซ์ข้อมูลระหว่างอุปกรณ์",
+
+            // การรีเซ็ตรหัสผ่าน
+            reset_password_title: "รีเซ็ตรหัสผ่าน",
+            reset_password_text: "ป้อนอีเมลของคุณ และเราจะส่งคำแนะนำในการรีเซ็ตรหัสผ่านให้คุณ",
+            send_instructions: "ส่งคำแนะนำ",
+
+            // เงื่อนไขการใช้บริการ
+            terms_title: "เงื่อนไขการใช้บริการ",
+            terms_welcome: "ยินดีต้อนรับสู่บัญชีครัวเรือน!",
+            terms_intro: "เมื่อใช้แอปพลิเคชันของเรา คุณยอมรับเงื่อนไขต่อไปนี้ โปรดอ่านอย่างละเอียด",
+            terms_account: "1. บัญชีผู้ใช้",
+            terms_account_text: "คุณมีหน้าที่รับผิดชอบในการรักษาความลับของบัญชีและรหัสผ่านของคุณ คุณตกลงที่จะแจ้งให้เราทราบถึงการใช้บัญชีของคุณโดยไม่ได้รับอนุญาต",
+            terms_privacy: "2. ความเป็นส่วนตัว",
+            terms_privacy_text: "เราเคารพความเป็นส่วนตัวของคุณและประมวลผลข้อมูลของคุณตามนโยบายความเป็นส่วนตัวของเรา ข้อมูลทางการเงินของคุณถูกเก็บไว้ในรูปแบบที่เข้ารหัสและไม่ถูกแบ่งปันกับบุคคลที่สาม",
+            terms_data: "3. ข้อมูลผู้ใช้",
+            terms_data_text: "คุณยังคงมีสิทธิ์ทั้งหมดในข้อมูลของคุณ เราไม่ใช้ข้อมูลทางการเงินของคุณเพื่อวัตถุประสงค์อื่นนอกเหนือจากการให้บริการแอปพลิเคชันแก่คุณ",
+            terms_changes: "4. การเปลี่ยนแปลงเงื่อนไข",
+            terms_changes_text: "เราขอสงวนสิทธิ์ในการแก้ไขเงื่อนไขเหล่านี้ได้ตลอดเวลา เราจะแจ้งให้คุณทราบถึงการเปลี่ยนแปลงที่สำคัญผ่านทางอีเมลหรือการแจ้งเตือนในแอปพลิเคชัน"
+        }
+    };
+
+    // Текущий язык (по умолчанию русский)
+    let currentLang = 'ru';
+
+    // Функция для изменения языка
+    function changeLanguage(lang) {
+        if (!dictionaries[lang]) return;
+
+        currentLang = lang;
+
+        // Обновляем атрибут lang у html
+        document.documentElement.lang = lang;
+
+        // Обновляем активную кнопку языка
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+        // Обновляем все элементы с атрибутом data-lang
+        document.querySelectorAll('[data-lang]').forEach(element => {
+            const key = element.getAttribute('data-lang');
+            if (dictionaries[lang][key]) {
+                element.textContent = dictionaries[lang][key];
+            }
+        });
+    }
+
+    // Функция для переключения вкладок
+    function switchTab(tabId) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        // Deactivate all tabs
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        // Show selected tab content
+        document.getElementById(tabId).classList.add('active');
+
+        // Activate selected tab
+        document.getElementById(tabId + '-tab').classList.add('active');
+    }
+
+    // Функция для переключения видимости пароля
+    function togglePassword(inputId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleBtn = passwordInput.parentElement.querySelector('.password-toggle');
+        const toggleIcon = toggleBtn.querySelector('i');
+        const toggleText = toggleBtn.querySelector('span');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('bi-eye');
+            toggleIcon.classList.add('bi-eye-slash');
+            if (toggleText) {
+                toggleText.textContent = dictionaries[currentLang]['hide_password'] || 'Скрыть';
+            }
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('bi-eye-slash');
+            toggleIcon.classList.add('bi-eye');
+            if (toggleText) {
+                toggleText.textContent = dictionaries[currentLang]['show_password'] || 'Показать';
+            }
+        }
+    }
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Проверяем, есть ли сохраненный язык в localStorage
+        const savedLang = localStorage.getItem('preferredLanguage');
+        if (savedLang && dictionaries[savedLang]) {
+            changeLanguage(savedLang);
+        } else {
+            // Если нет сохраненного языка, используем язык браузера или русский по умолчанию
+            const browserLang = navigator.language.split('-')[0];
+            if (dictionaries[browserLang]) {
+                changeLanguage(browserLang);
+            } else {
+                changeLanguage('ru');
+            }
+        }
+
+        // Добавляем обработчики событий для форм
+
+        document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Здесь будет логика восстановления пароля
+            alert('Инструкции по восстановлению пароля отправлены на указанный email');
+            document.getElementById('forgotPasswordModal').querySelector('.btn-close').click();
+        });
+    });
+
+    // Сохраняем выбранный язык в localStorage при изменении
+    const originalChangeLanguage = changeLanguage;
+    changeLanguage = function(lang) {
+        originalChangeLanguage(lang);
+        localStorage.setItem('preferredLanguage', lang);
+    };
+</script>
+</body>
+</html>
