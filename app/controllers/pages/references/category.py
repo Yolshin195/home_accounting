@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from litestar import Controller, get, post, delete
+from litestar import Controller, get, post, delete, put
 from litestar.di import Provide
 from litestar.enums import RequestEncodingType
 from litestar.params import Body
@@ -25,10 +25,9 @@ class CategoryReferenceController(Controller):
             "categories": categories
         })
 
-    @delete(status_code=302)
-    async def delete(self, category_id: UUID, service: CategoryReferenceService) -> Redirect:
+    @delete()
+    async def delete(self, category_id: UUID, service: CategoryReferenceService) -> None:
         await service.delete_category(category_id)
-        return Redirect("/v2/reference/category")
 
     @get('/old')
     async def category_v2_index(self, service: CategoryReferenceService) -> Template:
@@ -36,6 +35,10 @@ class CategoryReferenceController(Controller):
         return Template(template_name="references/category_v2.html.jinja2", context={
             "categories": categories
         })
+
+    @put()
+    async def update(self, category_id: UUID, service: CategoryReferenceService) -> None:
+        pass
 
     @post()
     async def create(

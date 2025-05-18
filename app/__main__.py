@@ -18,6 +18,6 @@ app = Litestar(
         directory=Path("app/templates"),
         engine=JinjaTemplateEngine,
     ),
-    plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config), litestar_users],
+    plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config), litestar_users, HTMXPlugin()],
     middleware=[redirect_unauthorized_users_middleware_factory]
 )

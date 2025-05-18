@@ -25,4 +25,4 @@ class CategoryReferenceService:
     async def delete_category(self, category_id: UUID) -> None:
         category = await self.repo.get_one(author=self.author, id=category_id)
         if category:
-            await self.repo.delete(category, auto_commit=True)
+            await self.repo.delete(item_id=category.id, auto_commit=True)

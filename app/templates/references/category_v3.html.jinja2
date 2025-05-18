@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
     <style>
         :root {
             --primary-color: #5c6ac4;
@@ -818,7 +819,7 @@
                                     <button class="action-btn" title="Редактировать">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                    <button hx-delete="/v2/reference/category?category_id={{ category.id }}" class="action-btn action-btn-danger" title="Удалить">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
