@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Календарь - Домашняя бухгалтерия</title>
+    <title>Календарь финансов - Домашняя бухгалтерия</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -11,11 +11,12 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #5c6ac4;
             --primary-light: #f5f7ff;
+            --primary-dark: #4c5aa9;
             --secondary-color: #6b7280;
             --success-color: #10b981;
             --success-light: rgba(16, 185, 129, 0.1);
@@ -43,21 +44,25 @@
             line-height: 1.5;
         }
 
-        .app-container {
+        .container {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 1.5rem;
+            padding: 0 1.5rem;
         }
 
         .header {
             background-color: white;
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
             box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 1rem 0;
         }
 
         .brand {
@@ -135,32 +140,76 @@
             background-color: var(--primary-light);
         }
 
-        .language-btn img {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-        }
-
-        .section {
-            background-color: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--card-shadow);
-        }
-
-        .section-title {
-            font-size: 1.25rem;
+        .lang-text {
             font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-close {
+                display: none;
+            }
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 1.5rem;
             color: var(--dark-color);
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            border: none;
             margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .card-body {
+            padding: 1.5rem;
         }
 
         .btn {
@@ -170,10 +219,11 @@
             gap: 0.5rem;
             font-weight: 500;
             border-radius: 0.5rem;
-            padding: 0.625rem 1rem;
+            padding: 0.75rem 1.5rem;
             transition: var(--transition);
             cursor: pointer;
             border: none;
+            text-decoration: none;
         }
 
         .btn-primary {
@@ -182,7 +232,8 @@
         }
 
         .btn-primary:hover {
-            background-color: #4c5aa9;
+            background-color: var(--primary-dark);
+            color: white;
         }
 
         .btn-success {
@@ -192,6 +243,18 @@
 
         .btn-success:hover {
             background-color: #0da571;
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
 
         .btn-danger {
@@ -200,42 +263,184 @@
         }
 
         .btn-danger:hover {
-            background-color: #dc2626;
-        }
-
-        .btn-secondary {
-            background-color: #e5e7eb;
-            color: var(--dark-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: #d1d5db;
+            background-color: #e02424;
+            color: white;
         }
 
         .btn-sm {
-            padding: 0.375rem 0.75rem;
+            padding: 0.5rem 1rem;
             font-size: 0.875rem;
         }
 
-        .btn-icon {
-            width: 2.5rem;
-            height: 2.5rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.5rem;
-            background-color: white;
-            color: var(--secondary-color);
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-            font-size: 1.25rem;
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
-        .btn-icon:hover {
-            background-color: #f9fafb;
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(92, 106, 196, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px 12px;
+            appearance: none;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(92, 106, 196, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-top: 0;
+            border: 1px solid var(--border-color);
+            border-radius: 0.25rem;
+            transition: var(--transition);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-check-label {
+            font-size: 1rem;
+            color: var(--dark-color);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+        }
+
+        .badge-success {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .badge-danger {
+            background-color: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .badge-primary {
+            background-color: var(--primary-light);
             color: var(--primary-color);
         }
 
+        .modal-content {
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .btn-close {
+            background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+
+        .btn-close:hover {
+            opacity: 0.75;
+        }
+
+        .footer {
+            background-color: white;
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-copyright {
+            color: var(--secondary-color);
+            font-size: 0.875rem;
+        }
+
+        /* Календарь */
         .calendar-header {
             display: flex;
             align-items: center;
@@ -246,13 +451,47 @@
         .calendar-title {
             font-size: 1.5rem;
             font-weight: 600;
-            color: var(--dark-color);
         }
 
         .calendar-nav {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
+        }
+
+        .calendar-nav-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-nav-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .calendar-today-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-today-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
 
         .calendar-grid {
@@ -263,26 +502,25 @@
 
         .calendar-weekday {
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--secondary-color);
             padding: 0.5rem;
-            font-size: 0.875rem;
         }
 
         .calendar-day {
-            aspect-ratio: 1;
+            position: relative;
+            min-height: 120px;
+            background-color: white;
             border-radius: 0.5rem;
-            border: 1px solid var(--border-color);
             padding: 0.5rem;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            background-color: white;
+            border: 1px solid var(--border-color);
         }
 
         .calendar-day:hover {
+            box-shadow: var(--card-shadow);
             border-color: var(--primary-color);
-            background-color: var(--primary-light);
         }
 
         .calendar-day.active {
@@ -291,137 +529,112 @@
         }
 
         .calendar-day.other-month {
-            opacity: 0.4;
+            opacity: 0.5;
         }
 
         .calendar-day.today {
             background-color: var(--primary-light);
-            border-color: var(--primary-color);
         }
 
         .calendar-day-number {
-            font-weight: 500;
-            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
         .calendar-day-content {
-            margin-top: 0.25rem;
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
+        }
+
+        .calendar-transaction {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
             font-size: 0.75rem;
-        }
-
-        .calendar-indicator {
-            height: 0.25rem;
-            border-radius: 1rem;
-            margin-top: 0.25rem;
-        }
-
-        .calendar-indicator-income {
-            background-color: var(--success-color);
-        }
-
-        .calendar-indicator-expense {
-            background-color: var(--danger-color);
-        }
-
-        .calendar-indicator-both {
-            background: linear-gradient(to right, var(--success-color) 50%, var(--danger-color) 50%);
-        }
-
-        .calendar-day-amount {
-            font-size: 0.75rem;
-            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .calendar-day-amount-income {
+        .calendar-transaction.income {
+            background-color: var(--success-light);
             color: var(--success-color);
         }
 
-        .calendar-day-amount-expense {
+        .calendar-transaction.expense {
+            background-color: var(--danger-light);
             color: var(--danger-color);
         }
 
-        .calendar-legend {
+        .calendar-day-summary {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .calendar-day-income {
+            color: var(--success-color);
+        }
+
+        .calendar-day-expense {
+            color: var(--danger-color);
+        }
+
+        .calendar-add-btn {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--secondary-color);
+        .calendar-day:hover .calendar-add-btn {
+            opacity: 1;
         }
 
-        .legend-indicator {
-            width: 1rem;
-            height: 0.25rem;
-            border-radius: 1rem;
+        .calendar-add-btn:hover {
+            transform: scale(1.1);
         }
 
-        .legend-indicator-income {
-            background-color: var(--success-color);
+        .day-details {
+            display: none;
         }
 
-        .legend-indicator-expense {
-            background-color: var(--danger-color);
-        }
-
-        .legend-indicator-both {
-            background: linear-gradient(to right, var(--success-color) 50%, var(--danger-color) 50%);
-        }
-
-        .daily-transactions {
-            margin-top: 2rem;
-        }
-
-        .daily-transactions-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .daily-transactions-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-
-        .daily-transactions-date {
-            font-size: 1rem;
-            color: var(--secondary-color);
+        .day-details.active {
+            display: block;
         }
 
         .transaction-list {
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            overflow: hidden;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
         .transaction-item {
             display: flex;
             align-items: center;
-            padding: 1rem;
+            padding: 0.75rem;
             border-bottom: 1px solid var(--border-color);
-            transition: var(--transition);
         }
 
         .transaction-item:last-child {
             border-bottom: none;
-        }
-
-        .transaction-item:hover {
-            background-color: var(--light-color);
         }
 
         .transaction-icon {
@@ -430,7 +643,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             margin-right: 1rem;
             font-size: 1.25rem;
         }
@@ -445,151 +658,179 @@
             color: var(--danger-color);
         }
 
-        .transaction-details {
+        .transaction-info {
             flex: 1;
         }
 
-        .transaction-category {
-            font-weight: 500;
+        .transaction-title {
+            font-weight: 600;
             margin-bottom: 0.25rem;
         }
 
-        .transaction-description {
+        .transaction-category {
             font-size: 0.875rem;
             color: var(--secondary-color);
         }
 
         .transaction-amount {
             font-weight: 600;
-            text-align: right;
-            white-space: nowrap;
         }
 
-        .transaction-amount-income {
+        .transaction-amount.income {
             color: var(--success-color);
         }
 
-        .transaction-amount-expense {
+        .transaction-amount.expense {
             color: var(--danger-color);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--secondary-color);
-        }
-
-        .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--border-color);
-        }
-
-        .empty-text {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 0.875rem;
-            color: var(--secondary-color);
-            padding: 1.5rem 0;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
         }
 
         .summary-card {
             background-color: white;
-            border-radius: 12px;
+            border-radius: 1rem;
             padding: 1.5rem;
             box-shadow: var(--card-shadow);
-            transition: var(--transition);
-            border: 1px solid var(--border-color);
-        }
-
-        .summary-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
         }
 
         .summary-title {
-            color: var(--secondary-color);
             font-size: 0.875rem;
-            font-weight: 500;
+            color: var(--secondary-color);
             margin-bottom: 0.5rem;
         }
 
         .summary-value {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
+            margin-bottom: 0.5rem;
         }
 
-        .income-value {
+        .summary-value.income {
             color: var(--success-color);
         }
 
-        .expense-value {
+        .summary-value.expense {
             color: var(--danger-color);
         }
 
-        .balance-value {
+        .summary-value.balance {
             color: var(--primary-color);
         }
 
-        .count-value {
-            color: var(--warning-color);
+        .view-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        /* Responsive adjustments */
+        .view-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .view-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .view-btn:hover:not(.active) {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
         @media (max-width: 992px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
+            .page-title {
+                font-size: 1.75rem;
             }
 
-            .navigation {
-                width: 100%;
-                justify-content: space-between;
+            .calendar-day {
+                min-height: 100px;
             }
         }
 
         @media (max-width: 768px) {
-            .summary-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .mobile-menu-toggle {
+                display: block;
             }
 
-            .calendar-grid {
-                gap: 0.25rem;
+            .navigation {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                justify-content: center;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
             }
 
-            .calendar-day {
-                padding: 0.25rem;
+            .navigation.active {
+                transform: translateX(0);
             }
 
             .nav-list {
-                flex-wrap: wrap;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
             }
 
-            .calendar-legend {
+            .nav-item a {
+                font-size: 1.25rem;
+                padding: 0.75rem 2rem;
+            }
+
+            .language-selector {
+                margin: 2rem 0 0;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .calendar-weekday {
+                display: none;
+            }
+
+            .calendar-day {
+                min-height: auto;
+                padding: 1rem;
+            }
+
+            .calendar-day-number {
+                display: inline-block;
+                margin-right: 0.5rem;
+            }
+
+            .calendar-day-number::after {
+                content: attr(data-weekday);
+                font-weight: normal;
+                color: var(--secondary-color);
+                margin-left: 0.5rem;
+            }
+
+            .footer-content {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
 
         @media (max-width: 576px) {
-            .summary-grid {
-                grid-template-columns: 1fr;
-            }
-
             .calendar-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -601,933 +842,1291 @@
                 justify-content: space-between;
             }
 
-            .calendar-weekday {
-                font-size: 0.75rem;
+            .view-selector {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
             }
 
-            .calendar-day-number {
-                font-size: 0.75rem;
-            }
-
-            .calendar-day-content {
-                display: none;
-            }
-
-            .calendar-indicator {
-                position: absolute;
-                bottom: 0.25rem;
-                left: 0.25rem;
-                right: 0.25rem;
+            .view-btn {
+                white-space: nowrap;
             }
         }
     </style>
 </head>
 <body>
-<div class="app-container">
-    <header class="header">
-        <div class="brand">
-            <i class="bi bi-wallet2 brand-icon"></i>
-            <h1 class="brand-title" data-lang="app_title">Домашняя бухгалтерия</h1>
-        </div>
-        <div class="navigation">
-            <nav>
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="/v2/dashboard" data-lang="nav_dashboard">Дашборд</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/v2/calendar" class="active" data-lang="nav_calendar">Календарь</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/v2/reference/category" data-lang="nav_categories">Категории</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/v2" data-lang="nav_transactions">Операции</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/v2/auth" data-lang="nav_account">Аккаунт</a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="language-selector">
-                <button class="language-btn" onclick="changeLanguage('en')" title="English">
-                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
-                </button>
-                <button class="language-btn active" onclick="changeLanguage('ru')" title="Русский">
-                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
-                </button>
-                <button class="language-btn" onclick="changeLanguage('th')" title="ไทย">
-                    <img src="https://flagcdn.com/w40/th.png" alt="ไทย">
-                </button>
-            </div>
-        </div>
-    </header>
+    {% with active_page='calendar' %}
+        {% include "navbar.html.jinja2" %}
+    {% endwith %}
 
-    <!-- Summary Cards -->
-    <div class="summary-grid">
-        <div class="summary-card">
-            <h3 class="summary-title" data-lang="summary_income">Доходы</h3>
-            <p class="summary-value income-value">+75,000 ₽</p>
-        </div>
-        <div class="summary-card">
-            <h3 class="summary-title" data-lang="summary_expenses">Расходы</h3>
-            <p class="summary-value expense-value">-42,350 ₽</p>
-        </div>
-        <div class="summary-card">
-            <h3 class="summary-title" data-lang="summary_balance">Баланс</h3>
-            <p class="summary-value balance-value">32,650 ₽</p>
-        </div>
-        <div class="summary-card">
-            <h3 class="summary-title" data-lang="summary_transactions">Операций</h3>
-            <p class="summary-value count-value">24</p>
-        </div>
-    </div>
+    <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+        <h1 class="page-title" data-lang="calendar_title">Календарь финансов</h1>
+        <p class="page-subtitle" data-lang="calendar_subtitle">Отслеживайте доходы и расходы по дням, неделям и месяцам</p>
 
-    <!-- Calendar Section -->
-    <section class="section">
-        <div class="calendar-header">
-            <h2 class="calendar-title" id="currentMonthYear">Май 2025</h2>
-            <div class="calendar-nav">
-                <button class="btn-icon" id="prevMonth">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <button class="btn btn-primary" id="currentMonth" data-lang="today">Сегодня</button>
-                <button class="btn-icon" id="nextMonth">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
-            </div>
+        <div class="view-selector">
+            <button class="view-btn" data-view="day" data-lang="calendar_view_day">День</button>
+            <button class="view-btn active" data-view="month" data-lang="calendar_view_month">Месяц</button>
+            <button class="view-btn" data-view="week" data-lang="calendar_view_week">Неделя</button>
+            <button class="view-btn" data-view="year" data-lang="calendar_view_year">Год</button>
         </div>
 
-        <div class="calendar-grid" id="calendarWeekdays">
-            <div class="calendar-weekday" data-lang="monday_short">Пн</div>
-            <div class="calendar-weekday" data-lang="tuesday_short">Вт</div>
-            <div class="calendar-weekday" data-lang="wednesday_short">Ср</div>
-            <div class="calendar-weekday" data-lang="thursday_short">Чт</div>
-            <div class="calendar-weekday" data-lang="friday_short">Пт</div>
-            <div class="calendar-weekday" data-lang="saturday_short">Сб</div>
-            <div class="calendar-weekday" data-lang="sunday_short">Вс</div>
-        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="calendar-header">
+                            <div class="calendar-title" id="calendarTitle">Май 2025</div>
+                            <div class="calendar-nav">
+                                <button class="calendar-nav-btn" id="prevMonth">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button class="calendar-today-btn" id="todayBtn" data-lang="calendar_today">Сегодня</button>
+                                <button class="calendar-nav-btn" id="nextMonth">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
 
-        <div class="calendar-grid" id="calendarDays">
-            <!-- Calendar days will be generated by JavaScript -->
-            <!-- Example of a day with both income and expense -->
-            <div class="calendar-day" onclick="showDayTransactions('2025-05-15')">
-                <div class="calendar-day-number">15</div>
-                <div class="calendar-indicator calendar-indicator-both"></div>
-                <div class="calendar-day-content">
-                    <div class="calendar-day-amount calendar-day-amount-income">+45,000 ₽</div>
-                    <div class="calendar-day-amount calendar-day-amount-expense">-8,500 ₽</div>
+                        <div class="calendar-grid">
+                            <div class="calendar-weekday" data-lang="calendar_weekday_mon">Пн</div>
+                            <div class="calendar-weekday" data-lang="calendar_weekday_tue">Вт</div>
+                            <div class="calendar-weekday" data-lang="calendar_weekday_wed">Ср</div>
+                            <div class="calendar-weekday" data-lang="calendar_weekday_thu">Чт</div>
+                            <div class="calendar-weekday" data-lang="calendar_weekday_fri">Пт</div>
+                            <div class="calendar-weekday" data-lang="calendar_weekday_sat">Сб</div>
+                            <div class="calendar-weekday" data-lang="calendar_weekday_sun">Вс</div>
+
+                            <!-- Дни предыдущего месяца -->
+                            <div class="calendar-day other-month" data-date="2025-04-28">
+                                <div class="calendar-day-number" data-weekday="Пн">28</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day other-month" data-date="2025-04-29">
+                                <div class="calendar-day-number" data-weekday="Вт">29</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day other-month" data-date="2025-04-30">
+                                <div class="calendar-day-number" data-weekday="Ср">30</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+
+                            <!-- Дни текущего месяца -->
+                            <div class="calendar-day" data-date="2025-05-01">
+                                <div class="calendar-day-number" data-weekday="Чт">1</div>
+                                <div class="calendar-day-content">
+                                    <div class="calendar-transaction expense">
+                                        <i class="bi bi-cart"></i>
+                                        <span>Продукты</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-day-summary">
+                                    <div class="calendar-day-expense">-2 500 ₽</div>
+                                </div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-02">
+                                <div class="calendar-day-number" data-weekday="Пт">2</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-03">
+                                <div class="calendar-day-number" data-weekday="Сб">3</div>
+                                <div class="calendar-day-content">
+                                    <div class="calendar-transaction expense">
+                                        <i class="bi bi-cup-hot"></i>
+                                        <span>Кафе</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-day-summary">
+                                    <div class="calendar-day-expense">-1 200 ₽</div>
+                                </div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-04">
+                                <div class="calendar-day-number" data-weekday="Вс">4</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-05">
+                                <div class="calendar-day-number" data-weekday="Пн">5</div>
+                                <div class="calendar-day-content">
+                                    <div class="calendar-transaction expense">
+                                        <i class="bi bi-car-front"></i>
+                                        <span>Такси</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-day-summary">
+                                    <div class="calendar-day-expense">-450 ₽</div>
+                                </div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-06">
+                                <div class="calendar-day-number" data-weekday="Вт">6</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-07">
+                                <div class="calendar-day-number" data-weekday="Ср">7</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-08">
+                                <div class="calendar-day-number" data-weekday="Чт">8</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-09">
+                                <div class="calendar-day-number" data-weekday="Пт">9</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-10">
+                                <div class="calendar-day-number" data-weekday="Сб">10</div>
+                                <div class="calendar-day-content">
+                                    <div class="calendar-transaction income">
+                                        <i class="bi bi-briefcase"></i>
+                                        <span>Зарплата</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-day-summary">
+                                    <div class="calendar-day-income">+75 000 ₽</div>
+                                </div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-11">
+                                <div class="calendar-day-number" data-weekday="Вс">11</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-12">
+                                <div class="calendar-day-number" data-weekday="Пн">12</div>
+                                <div class="calendar-day-content">
+                                    <div class="calendar-transaction expense">
+                                        <i class="bi bi-house"></i>
+                                        <span>Аренда</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-day-summary">
+                                    <div class="calendar-day-expense">-30 000 ₽</div>
+                                </div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-13">
+                                <div class="calendar-day-number" data-weekday="Вт">13</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-14">
+                                <div class="calendar-day-number" data-weekday="Ср">14</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-15">
+                                <div class="calendar-day-number" data-weekday="Чт">15</div>
+                                <div class="calendar-day-content">
+                                    <div class="calendar-transaction expense">
+                                        <i class="bi bi-cart"></i>
+                                        <span>Продукты</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-day-summary">
+                                    <div class="calendar-day-expense">-3 200 ₽</div>
+                                </div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day today active" data-date="2025-05-16">
+                                <div class="calendar-day-number" data-weekday="Пт">16</div>
+                                <div class="calendar-day-content">
+                                    <div class="calendar-transaction expense">
+                                        <i class="bi bi-phone"></i>
+                                        <span>Связь</span>
+                                    </div>
+                                    <div class="calendar-transaction expense">
+                                        <i class="bi bi-cup-hot"></i>
+                                        <span>Кафе</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-day-summary">
+                                    <div class="calendar-day-expense">-1 800 ₽</div>
+                                </div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-17">
+                                <div class="calendar-day-number" data-weekday="Сб">17</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-18">
+                                <div class="calendar-day-number" data-weekday="Вс">18</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-19">
+                                <div class="calendar-day-number" data-weekday="Пн">19</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-20">
+                                <div class="calendar-day-number" data-weekday="Вт">20</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-21">
+                                <div class="calendar-day-number" data-weekday="Ср">21</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-22">
+                                <div class="calendar-day-number" data-weekday="Чт">22</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-23">
+                                <div class="calendar-day-number" data-weekday="Пт">23</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-24">
+                                <div class="calendar-day-number" data-weekday="Сб">24</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-25">
+                                <div class="calendar-day-number" data-weekday="Вс">25</div>
+                                <div class="calendar-day-content">
+                                    <div class="calendar-transaction income">
+                                        <i class="bi bi-bank"></i>
+                                        <span>Дивиденды</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-day-summary">
+                                    <div class="calendar-day-income">+5 000 ₽</div>
+                                </div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-26">
+                                <div class="calendar-day-number" data-weekday="Пн">26</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-27">
+                                <div class="calendar-day-number" data-weekday="Вт">27</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-28">
+                                <div class="calendar-day-number" data-weekday="Ср">28</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-29">
+                                <div class="calendar-day-number" data-weekday="Чт">29</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-30">
+                                <div class="calendar-day-number" data-weekday="Пт">30</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-day" data-date="2025-05-31">
+                                <div class="calendar-day-number" data-weekday="Сб">31</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+
+                            <!-- Дни следующего месяца -->
+                            <div class="calendar-day other-month" data-date="2025-06-01">
+                                <div class="calendar-day-number" data-weekday="Вс">1</div>
+                                <div class="calendar-day-content"></div>
+                                <button class="calendar-add-btn" title="Добавить транзакцию">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- Example of a day with only income -->
-            <div class="calendar-day" onclick="showDayTransactions('2025-05-10')">
-                <div class="calendar-day-number">10</div>
-                <div class="calendar-indicator calendar-indicator-income"></div>
-                <div class="calendar-day-content">
-                    <div class="calendar-day-amount calendar-day-amount-income">+15,000 ₽</div>
+
+            <div class="col-lg-3">
+                <div class="day-details active" id="dayDetails">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h2 class="card-title" data-lang="calendar_day_details">Детали дня</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h3 class="h5" data-lang="calendar_selected_date">Выбранная дата</h3>
+                                <p class="mb-0" id="selectedDate">16 мая 2025, Пятница</p>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <div class="summary-title" data-lang="calendar_income">Доходы</div>
+                                    <div class="summary-value income" id="dayIncome">0 ₽</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="summary-title" data-lang="calendar_expense">Расходы</div>
+                                    <div class="summary-value expense" id="dayExpense">1 800 ₽</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <h3 class="h5" data-lang="calendar_transactions">Транзакции</h3>
+                                <div class="transaction-list">
+                                    <div class="transaction-item">
+                                        <div class="transaction-icon transaction-icon-expense">
+                                            <i class="bi bi-phone"></i>
+                                        </div>
+                                        <div class="transaction-info">
+                                            <div class="transaction-title" data-lang="transaction_phone">Связь</div>
+                                            <div class="transaction-category" data-lang="category_utilities">Коммунальные услуги</div>
+                                        </div>
+                                        <div class="transaction-amount expense">-800 ₽</div>
+                                    </div>
+                                    <div class="transaction-item">
+                                        <div class="transaction-icon transaction-icon-expense">
+                                            <i class="bi bi-cup-hot"></i>
+                                        </div>
+                                        <div class="transaction-info">
+                                            <div class="transaction-title" data-lang="transaction_cafe">Кафе</div>
+                                            <div class="transaction-category" data-lang="category_entertainment">Развлечения</div>
+                                        </div>
+                                        <div class="transaction-amount expense">-1 000 ₽</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary w-100" id="addTransactionBtn" data-lang="calendar_add_transaction">
+                                <i class="bi bi-plus-lg"></i>
+                                <span>Добавить транзакцию</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title" data-lang="calendar_month_summary">Итоги месяца</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <div class="summary-title" data-lang="calendar_income">Доходы</div>
+                                    <div class="summary-value income">80 000 ₽</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="summary-title" data-lang="calendar_expense">Расходы</div>
+                                    <div class="summary-value expense">39 150 ₽</div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="summary-title" data-lang="calendar_balance">Баланс</div>
+                                <div class="summary-value balance">40 850 ₽</div>
+                            </div>
+                            <div class="mb-3">
+                                <h3 class="h5" data-lang="calendar_top_categories">Топ категории</h3>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span data-lang="category_housing">Жилье</span>
+                                    <span class="fw-bold">30 000 ₽</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span data-lang="category_groceries">Продукты</span>
+                                    <span class="fw-bold">5 700 ₽</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span data-lang="category_entertainment">Развлечения</span>
+                                    <span class="fw-bold">2 200 ₽</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- Example of a day with only expense -->
-            <div class="calendar-day" onclick="showDayTransactions('2025-05-18')">
-                <div class="calendar-day-number">18</div>
-                <div class="calendar-indicator calendar-indicator-expense"></div>
-                <div class="calendar-day-content">
-                    <div class="calendar-day-amount calendar-day-amount-expense">-5,200 ₽</div>
-                </div>
-            </div>
         </div>
+    </main>
 
-        <div class="calendar-legend">
-            <div class="legend-item">
-                <div class="legend-indicator legend-indicator-income"></div>
-                <span data-lang="legend_income">Доходы</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-indicator legend-indicator-expense"></div>
-                <span data-lang="legend_expense">Расходы</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-indicator legend-indicator-both"></div>
-                <span data-lang="legend_both">Доходы и расходы</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Daily Transactions Section -->
-    <section class="section daily-transactions" id="dailyTransactionsSection">
-        <div class="daily-transactions-header">
-            <h3 class="daily-transactions-title" data-lang="daily_transactions">Операции за день</h3>
-            <div class="daily-transactions-date" id="selectedDate">15 мая 2025</div>
-        </div>
-
-        <div class="transaction-list">
-            <!-- Income transaction example -->
-            <div class="transaction-item">
-                <div class="transaction-icon transaction-icon-income">
-                    <i class="bi bi-briefcase"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="transaction-category" data-lang="income_salary">Зарплата</div>
-                    <div class="transaction-description" data-lang="salary_may">Зарплата за май</div>
-                </div>
-                <div class="transaction-amount transaction-amount-income">+45,000 ₽</div>
-            </div>
-
-            <!-- Expense transaction example -->
-            <div class="transaction-item">
-                <div class="transaction-icon transaction-icon-expense">
-                    <i class="bi bi-house"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="transaction-category" data-lang="expense_utilities">Коммунальные услуги</div>
-                    <div class="transaction-description" data-lang="utilities_may">Коммунальные платежи за май</div>
-                </div>
-                <div class="transaction-amount transaction-amount-expense">-8,500 ₽</div>
-            </div>
-        </div>
-
-        <div class="text-center mt-4">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTransactionModal">
-                <i class="bi bi-plus-lg"></i> <span data-lang="add_transaction">Добавить операцию</span>
-            </button>
-        </div>
-    </section>
-
-    <!-- Empty State for Daily Transactions (hidden by default) -->
-    <section class="section daily-transactions d-none" id="emptyTransactionsSection">
-        <div class="daily-transactions-header">
-            <h3 class="daily-transactions-title" data-lang="daily_transactions">Операции за день</h3>
-            <div class="daily-transactions-date" id="emptySelectedDate">20 мая 2025</div>
-        </div>
-
-        <div class="empty-state">
-            <div class="empty-icon">
-                <i class="bi bi-calendar-x"></i>
-            </div>
-            <div class="empty-text" data-lang="no_transactions">Нет операций за выбранный день</div>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTransactionModal">
-                <i class="bi bi-plus-lg"></i> <span data-lang="add_transaction">Добавить операцию</span>
-            </button>
-        </div>
-    </section>
-
-    <!-- Модальное окно для добавления операции -->
-    <div class="modal fade" id="addTransactionModal" tabindex="-1" aria-labelledby="addTransactionModalLabel"
-         aria-hidden="true">
+    <!-- Модальное окно для добавления транзакции -->
+    <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header modal-header-create"
-                     style="background-color: var(--success-color); color: white;">
-                    <h5 class="modal-title" id="addTransactionModalLabel" data-lang="add_transaction_title">Добавление
-                        новой операции</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transactionModalLabel" data-lang="transaction_add">Добавить транзакцию</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addTransactionForm">
+                    <form id="transactionForm">
                         <div class="form-group">
                             <label for="transactionDate" class="form-label" data-lang="transaction_date">Дата</label>
-                            <input type="date" class="form-control" id="transactionDate" required>
+                            <input type="date" class="form-control" id="transactionDate" value="2025-05-16">
                         </div>
                         <div class="form-group">
-                            <label for="transactionType" class="form-label" data-lang="transaction_type">Тип
-                                операции</label>
-                            <select class="form-select" id="transactionType" required>
-                                <option value="" data-lang="select_type">Выберите тип</option>
-                                <option value="income" data-lang="income">Доход</option>
-                                <option value="expense" data-lang="expense">Расход</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="transactionCategory" class="form-label" data-lang="transaction_category">Категория</label>
-                            <select class="form-select" id="transactionCategory" required>
-                                <option value="" data-lang="select_category">Выберите категорию</option>
-                                <optgroup label="Доходы" data-lang="income_group">
-                                    <option value="salary" data-lang="income_salary">Зарплата</option>
-                                    <option value="freelance" data-lang="income_freelance">Подработка</option>
-                                    <option value="interest" data-lang="income_interest">Проценты по вкладам</option>
-                                </optgroup>
-                                <optgroup label="Расходы" data-lang="expense_group">
-                                    <option value="groceries" data-lang="expense_groceries">Продукты</option>
-                                    <option value="utilities" data-lang="expense_utilities">Коммунальные услуги</option>
-                                    <option value="transport" data-lang="expense_transport">Транспорт</option>
-                                    <option value="entertainment" data-lang="expense_entertainment">Развлечения</option>
-                                    <option value="health" data-lang="expense_health">Здоровье</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="transactionAmount" class="form-label"
-                                   data-lang="transaction_amount">Сумма</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="transactionAmount" min="0" step="0.01"
-                                       required>
-                                <span class="input-group-text">₽</span>
+                            <label class="form-label" data-lang="transaction_type">Тип транзакции</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="transactionType" id="typeIncome" value="income">
+                                <label class="form-check-label" for="typeIncome" data-lang="transaction_type_income">Доход</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="transactionType" id="typeExpense" value="expense" checked>
+                                <label class="form-check-label" for="typeExpense" data-lang="transaction_type_expense">Расход</label>
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="transactionAmount" class="form-label" data-lang="transaction_amount">Сумма</label>
+                            <input type="number" class="form-control" id="transactionAmount" placeholder="0" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="transactionCategory" class="form-label" data-lang="transaction_category">Категория</label>
+                            <select class="form-select" id="transactionCategory">
+                                <option value="" disabled selected data-lang="transaction_select_category">Выберите категорию</option>
+                                <optgroup label="Расходы" data-lang="transaction_expenses">
+                                    <option value="housing" data-lang="category_housing">Жилье</option>
+                                    <option value="groceries" data-lang="category_groceries">Продукты</option>
+                                    <option value="transport" data-lang="category_transport">Транспорт</option>
+                                    <option value="entertainment" data-lang="category_entertainment">Развлечения</option>
+                                    <option value="health" data-lang="category_health">Здоровье</option>
+                                    <option value="education" data-lang="category_education">Образование</option>
+                                    <option value="utilities" data-lang="category_utilities">Коммунальные услуги</option>
+                                </optgroup>
+                                <optgroup label="Доходы" data-lang="transaction_income">
+                                    <option value="salary" data-lang="category_salary">Зарплата</option>
+                                    <option value="investments" data-lang="category_investments">Инвестиции</option>
+                                    <option value="gifts" data-lang="category_gifts">Подарки</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="transactionDescription" class="form-label" data-lang="transaction_description">Описание</label>
-                            <textarea class="form-control" id="transactionDescription" rows="3"></textarea>
+                            <input type="text" class="form-control" id="transactionDescription" placeholder="Например: Продукты в супермаркете" data-lang-placeholder="transaction_description_placeholder">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-lang="cancel">Отмена
-                    </button>
-                    <button type="submit" form="addTransactionForm" class="btn btn-success" data-lang="add">Добавить
-                    </button>
+                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal" data-lang="transaction_cancel">Отмена</button>
+                    <button type="button" class="btn btn-primary" id="saveTransactionBtn" data-lang="transaction_save">Сохранить</button>
                 </div>
             </div>
         </div>
     </div>
 
     <footer class="footer">
-        &copy; 2025 <span data-lang="app_title">Домашняя бухгалтерия</span>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#" class="footer-link" data-lang="footer_help">Помощь</a>
+                    <a href="#" class="footer-link" data-lang="footer_privacy">Конфиденциальность</a>
+                    <a href="#" class="footer-link" data-lang="footer_terms">Условия использования</a>
+                </div>
+                <div class="footer-copyright">
+                    &copy; 2025 <span data-lang="app_title">Домашняя бухгалтерия</span>. <span data-lang="footer_rights">Все права защищены.</span>
+                </div>
+            </div>
+        </div>
     </footer>
-</div>
 
-<!-- Bootstrap JS Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Локализация и календарь -->
-<script>
-    // Словари для разных языков
-    const dictionaries = {
-        ru: {
-            // Общие
-            app_title: "Домашняя бухгалтерия",
-            nav_categories: "Категории",
-            nav_transactions: "Операции",
-            nav_calendar: "Календарь",
-            nav_account: "Аккаунт",
-            cancel: "Отмена",
-            add: "Добавить",
-            save: "Сохранить",
-            delete: "Удалить",
-            today: "Сегодня",
+    <script>
+        // Словари для разных языков
+        const dictionaries = {
+            ru: {
+                // Общие
+                app_title: "Домашняя бухгалтерия",
+                nav_home: "Главная",
+                nav_transactions: "Транзакции",
+                nav_categories: "Категории",
+                nav_calendar: "Календарь",
+                nav_budget: "Бюджет",
 
-            // Сводка
-            summary_income: "Доходы",
-            summary_expenses: "Расходы",
-            summary_balance: "Баланс",
-            summary_transactions: "Операций",
+                // Календарь
+                calendar_title: "Календарь финансов",
+                calendar_subtitle: "Отслеживайте доходы и расходы по дням, неделям и месяцам",
+                calendar_view_day: "День",
+                calendar_view_month: "Месяц",
+                calendar_view_week: "Неделя",
+                calendar_view_year: "Год",
+                calendar_today: "Сегодня",
+                calendar_weekday_mon: "Пн",
+                calendar_weekday_tue: "Вт",
+                calendar_weekday_wed: "Ср",
+                calendar_weekday_thu: "Чт",
+                calendar_weekday_fri: "Пт",
+                calendar_weekday_sat: "Сб",
+                calendar_weekday_sun: "Вс",
+                calendar_day_details: "Детали дня",
+                calendar_selected_date: "Выбранная дата",
+                calendar_income: "Доходы",
+                calendar_expense: "Расходы",
+                calendar_balance: "Баланс",
+                calendar_transactions: "Транзакции",
+                calendar_add_transaction: "Добавить транзакцию",
+                calendar_month_summary: "Итоги месяца",
+                calendar_top_categories: "Топ категории",
 
-            // Дни недели
-            monday_short: "Пн",
-            tuesday_short: "Вт",
-            wednesday_short: "Ср",
-            thursday_short: "Чт",
-            friday_short: "Пт",
-            saturday_short: "Сб",
-            sunday_short: "Вс",
+                // Транзакции
+                transaction_add: "Добавить транзакцию",
+                transaction_date: "Дата",
+                transaction_type: "Тип транзакции",
+                transaction_type_income: "Доход",
+                transaction_type_expense: "Расход",
+                transaction_amount: "Сумма",
+                transaction_category: "Категория",
+                transaction_select_category: "Выберите категорию",
+                transaction_expenses: "Расходы",
+                transaction_income: "Доходы",
+                transaction_description: "Описание",
+                transaction_description_placeholder: "Например: Продукты в супермаркете",
+                transaction_cancel: "Отмена",
+                transaction_save: "Сохранить",
+                transaction_phone: "Связь",
+                transaction_cafe: "Кафе",
 
-            // Месяцы
-            january: "Январь",
-            february: "Февраль",
-            march: "Март",
-            april: "Апрель",
-            may: "Май",
-            june: "Июнь",
-            july: "Июль",
-            august: "Август",
-            september: "Сентябрь",
-            october: "Октябрь",
-            november: "Ноябрь",
-            december: "Декабрь",
+                // Категории
+                category_housing: "Жилье",
+                category_groceries: "Продукты",
+                category_transport: "Транспорт",
+                category_entertainment: "Развлечения",
+                category_health: "Здоровье",
+                category_education: "Образование",
+                category_utilities: "Коммунальные услуги",
+                category_salary: "Зарплата",
+                category_investments: "Инвестиции",
+                category_gifts: "Подарки",
 
-            // Календарь
-            legend_income: "Доходы",
-            legend_expense: "Расходы",
-            legend_both: "Доходы и расходы",
-            daily_transactions: "Операции за день",
-            no_transactions: "Нет операций за выбранный день",
+                // Футер
+                footer_help: "Помощь",
+                footer_privacy: "Конфиденциальность",
+                footer_terms: "Условия использования",
+                footer_rights: "Все права защищены."
+            },
+            en: {
+                // General
+                app_title: "Home Accounting",
+                nav_home: "Home",
+                nav_transactions: "Transactions",
+                nav_categories: "Categories",
+                nav_calendar: "Calendar",
+                nav_budget: "Budget",
 
-            // Типы операций
-            income: "Доход",
-            expense: "Расход",
+                // Calendar
+                calendar_title: "Finance Calendar",
+                calendar_subtitle: "Track income and expenses by days, weeks, and months",
+                calendar_view_day: "Day",
+                calendar_view_month: "Month",
+                calendar_view_week: "Week",
+                calendar_view_year: "Year",
+                calendar_today: "Today",
+                calendar_weekday_mon: "Mon",
+                calendar_weekday_tue: "Tue",
+                calendar_weekday_wed: "Wed",
+                calendar_weekday_thu: "Thu",
+                calendar_weekday_fri: "Fri",
+                calendar_weekday_sat: "Sat",
+                calendar_weekday_sun: "Sun",
+                calendar_day_details: "Day Details",
+                calendar_selected_date: "Selected Date",
+                calendar_income: "Income",
+                calendar_expense: "Expenses",
+                calendar_balance: "Balance",
+                calendar_transactions: "Transactions",
+                calendar_add_transaction: "Add Transaction",
+                calendar_month_summary: "Month Summary",
+                calendar_top_categories: "Top Categories",
 
-            // Категории доходов
-            income_group: "Доходы",
-            income_salary: "Зарплата",
-            income_freelance: "Подработка",
-            income_interest: "Проценты по вкладам",
+                // Transactions
+                transaction_add: "Add Transaction",
+                transaction_date: "Date",
+                transaction_type: "Transaction Type",
+                transaction_type_income: "Income",
+                transaction_type_expense: "Expense",
+                transaction_amount: "Amount",
+                transaction_category: "Category",
+                transaction_select_category: "Select a category",
+                transaction_expenses: "Expenses",
+                transaction_income: "Income",
+                transaction_description: "Description",
+                transaction_description_placeholder: "For example: Groceries at the supermarket",
+                transaction_cancel: "Cancel",
+                transaction_save: "Save",
+                transaction_phone: "Phone",
+                transaction_cafe: "Cafe",
 
-            // Категории расходов
-            expense_group: "Расходы",
-            expense_groceries: "Продукты",
-            expense_utilities: "Коммунальные услуги",
-            expense_transport: "Транспорт",
-            expense_entertainment: "Развлечения",
-            expense_health: "Здоровье",
+                // Categories
+                category_housing: "Housing",
+                category_groceries: "Groceries",
+                category_transport: "Transport",
+                category_entertainment: "Entertainment",
+                category_health: "Health",
+                category_education: "Education",
+                category_utilities: "Utilities",
+                category_salary: "Salary",
+                category_investments: "Investments",
+                category_gifts: "Gifts",
 
-            // Описания операций
-            salary_may: "Зарплата за май",
-            utilities_may: "Коммунальные платежи за май",
+                // Footer
+                footer_help: "Help",
+                footer_privacy: "Privacy",
+                footer_terms: "Terms of Use",
+                footer_rights: "All rights reserved."
+            },
+            th: {
+                // ทั่วไป
+                app_title: "บัญชีครัวเรือน",
+                nav_home: "หน้าหลัก",
+                nav_transactions: "ธุรกรรม",
+                nav_categories: "หมวดหมู่",
+                nav_calendar: "ปฏิทิน",
+                nav_budget: "งบประมาณ",
 
-            // Модальные окна
-            add_transaction: "Добавить операцию",
-            add_transaction_title: "Добавление новой операции",
-            transaction_date: "Дата",
-            transaction_type: "Тип операции",
-            transaction_category: "Категория",
-            transaction_amount: "Сумма",
-            transaction_description: "Описание",
-            select_type: "Выберите тип",
-            select_category: "Выберите категорию"
-        },
-        en: {
-            // General
-            app_title: "Home Accounting",
-            nav_categories: "Categories",
-            nav_transactions: "Transactions",
-            nav_calendar: "Calendar",
-            nav_account: "Account",
-            cancel: "Cancel",
-            add: "Add",
-            save: "Save",
-            delete: "Delete",
-            today: "Today",
+                // ปฏิทิน
+                calendar_title: "ปฏิทินการเงิน",
+                calendar_subtitle: "ติดตามรายรับและรายจ่ายตามวัน สัปดาห์ และเดือน",
+                calendar_view_day: "วัน",
+                calendar_view_month: "เดือน",
+                calendar_view_week: "สัปดาห์",
+                calendar_view_year: "ปี",
+                calendar_today: "วันนี้",
+                calendar_weekday_mon: "จ",
+                calendar_weekday_tue: "อ",
+                calendar_weekday_wed: "พ",
+                calendar_weekday_thu: "พฤ",
+                calendar_weekday_fri: "ศ",
+                calendar_weekday_sat: "ส",
+                calendar_weekday_sun: "อา",
+                calendar_day_details: "รายละเอียดวัน",
+                calendar_selected_date: "วันที่เลือก",
+                calendar_income: "รายได้",
+                calendar_expense: "ค่าใช้จ่าย",
+                calendar_balance: "ยอดคงเหลือ",
+                calendar_transactions: "ธุรกรรม",
+                calendar_add_transaction: "เพิ่มธุรกรรม",
+                calendar_month_summary: "สรุปเดือน",
+                calendar_top_categories: "หมวดหมู่ยอดนิยม",
 
-             // Summary
-            summary_income: "Income",
-            summary_expenses: "Expenses",
-            summary_balance: "Balance",
-            summary_transactions: "Transactions",
+                // ธุรกรรม
+                transaction_add: "เพิ่มธุรกรรม",
+                transaction_date: "วันที่",
+                transaction_type: "ประเภทธุรกรรม",
+                transaction_type_income: "รายได้",
+                transaction_type_expense: "ค่าใช้จ่าย",
+                transaction_amount: "จำนวนเงิน",
+                transaction_category: "หมวดหมู่",
+                transaction_select_category: "เลือกหมวดหมู่",
+                transaction_expenses: "ค่าใช้จ่าย",
+                transaction_income: "รายได้",
+                transaction_description: "คำอธิบาย",
+                transaction_description_placeholder: "ตัวอย่าง: ของชำที่ซูเปอร์มาร์เก็ต",
+                transaction_cancel: "ยกเลิก",
+                transaction_save: "บันทึก",
+                transaction_phone: "โทรศัพท์",
+                transaction_cafe: "คาเฟ่",
 
-            // Weekdays
-            monday_short: "Mon",
-            tuesday_short: "Tue",
-            wednesday_short: "Wed",
-            thursday_short: "Thu",
-            friday_short: "Fri",
-            saturday_short: "Sat",
-            sunday_short: "Sun",
+                // หมวดหมู่
+                category_housing: "ที่อยู่อาศัย",
+                category_groceries: "ของชำ",
+                category_transport: "การขนส่ง",
+                category_entertainment: "ความบันเทิง",
+                category_health: "สุขภาพ",
+                category_education: "การศึกษา",
+                category_utilities: "สาธารณูปโภค",
+                category_salary: "เงินเดือน",
+                category_investments: "การลงทุน",
+                category_gifts: "ของขวัญ",
 
-            // Months
-            january: "January",
-            february: "February",
-            march: "March",
-            april: "April",
-            may: "May",
-            june: "June",
-            july: "July",
-            august: "August",
-            september: "September",
-            october: "October",
-            november: "November",
-            december: "December",
-
-            // Calendar
-            legend_income: "Income",
-            legend_expense: "Expenses",
-            legend_both: "Income and Expenses",
-            daily_transactions: "Daily Transactions",
-            no_transactions: "No transactions for the selected day",
-
-            // Transaction types
-            income: "Income",
-            expense: "Expense",
-
-            // Income categories
-            income_group: "Income",
-            income_salary: "Salary",
-            income_freelance: "Freelance",
-            income_interest: "Interest",
-
-            // Expense categories
-            expense_group: "Expenses",
-            expense_groceries: "Groceries",
-            expense_utilities: "Utilities",
-            expense_transport: "Transportation",
-            expense_entertainment: "Entertainment",
-            expense_health: "Healthcare",
-
-            // Transaction descriptions
-            salary_may: "May salary",
-            utilities_may: "May utility bills",
-
-            // Modal windows
-            add_transaction: "Add Transaction",
-            add_transaction_title: "Add New Transaction",
-            transaction_date: "Date",
-            transaction_type: "Transaction Type",
-            transaction_category: "Category",
-            transaction_amount: "Amount",
-            transaction_description: "Description",
-            select_type: "Select type",
-            select_category: "Select category"
-        },
-        th: {
-            // ทั่วไป
-            app_title: "บัญชีครัวเรือน",
-            nav_categories: "หมวดหมู่",
-            nav_transactions: "ธุรกรรม",
-            nav_calendar: "ปฏิทิน",
-            nav_account: "บัญชีผู้ใช้",
-            cancel: "ยกเลิก",
-            add: "เพิ่ม",
-            save: "บันทึก",
-            delete: "ลบ",
-            today: "วันนี้",
-
-            // สรุป
-            summary_income: "รายรับ",
-            summary_expenses: "รายจ่าย",
-            summary_balance: "ยอดคงเหลือ",
-            summary_transactions: "ธุรกรรม",
-
-            // วันในสัปดาห์
-            monday_short: "จ",
-            tuesday_short: "อ",
-            wednesday_short: "พ",
-            thursday_short: "พฤ",
-            friday_short: "ศ",
-            saturday_short: "ส",
-            sunday_short: "อา",
-
-            // เดือน
-            january: "มกราคม",
-            february: "กุมภาพันธ์",
-            march: "มีนาคม",
-            april: "เมษายน",
-            may: "พฤษภาคม",
-            june: "มิถุนายน",
-            july: "กรกฎาคม",
-            august: "สิงหาคม",
-            september: "กันยายน",
-            october: "ตุลาคม",
-            november: "พฤศจิกายน",
-            december: "ธันวาคม",
-
-            // ปฏิทิน
-            legend_income: "รายรับ",
-            legend_expense: "รายจ่าย",
-            legend_both: "รายรับและรายจ่าย",
-            daily_transactions: "ธุรกรรมรายวัน",
-            no_transactions: "ไม่มีธุรกรรมสำหรับวันที่เลือก",
-
-            // ประเภทธุรกรรม
-            income: "รายรับ",
-            expense: "รายจ่าย",
-
-            // หมวดหมู่รายรับ
-            income_group: "รายรับ",
-            income_salary: "เงินเดือน",
-            income_freelance: "งานอิสระ",
-            income_interest: "ดอกเบี้ย",
-
-            // หมวดหมู่รายจ่าย
-            expense_group: "รายจ่าย",
-            expense_groceries: "ของชำ",
-            expense_utilities: "สาธารณูปโภค",
-            expense_transport: "การเดินทาง",
-            expense_entertainment: "ความบันเทิง",
-            expense_health: "สุขภาพ",
-
-            // คำอธิบายธุรกรรม
-            salary_may: "เงินเดือนเดือนพฤษภาคม",
-            utilities_may: "ค่าสาธารณูปโภคเดือนพฤษภาคม",
-
-            // หน้าต่างโมดัล
-            add_transaction: "เพิ่มธุรกรรม",
-            add_transaction_title: "เพิ่มธุรกรรมใหม่",
-            transaction_date: "วันที่",
-            transaction_type: "ประเภทธุรกรรม",
-            transaction_category: "หมวดหมู่",
-            transaction_amount: "จำนวนเงิน",
-            transaction_description: "คำอธิบาย",
-            select_type: "เลือกประเภท",
-            select_category: "เลือกหมวดหมู่"
-        }
-    };
-
-    // Текущий язык (по умолчанию русский)
-    let currentLang = 'ru';
-
-    // Функция для изменения языка
-    function changeLanguage(lang) {
-        if (!dictionaries[lang]) return;
-
-        currentLang = lang;
-
-        // Обновляем атрибут lang у html
-        document.documentElement.lang = lang;
-
-        // Обновляем активную кнопку языка
-        document.querySelectorAll('.language-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
-
-        // Обновляем все элементы с атрибутом data-lang
-        document.querySelectorAll('[data-lang]').forEach(element => {
-            const key = element.getAttribute('data-lang');
-            if (dictionaries[lang][key]) {
-                element.textContent = dictionaries[lang][key];
+                // ส่วนท้าย
+                footer_help: "ช่วยเหลือ",
+                footer_privacy: "ความเป็นส่วนตัว",
+                footer_terms: "เงื่อนไขการใช้งาน",
+                footer_rights: "สงวนลิขสิทธิ์ทั้งหมด"
             }
-        });
-
-        // Обновляем плейсхолдеры
-        document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
-            const key = element.getAttribute('data-lang-placeholder');
-            if (dictionaries[lang][key]) {
-                element.placeholder = dictionaries[lang][key];
-            }
-        });
-
-        // Обновляем опции в select
-        document.querySelectorAll('option[data-lang]').forEach(option => {
-            const key = option.getAttribute('data-lang');
-            if (dictionaries[lang][key]) {
-                option.textContent = dictionaries[lang][key];
-            }
-        });
-
-        // Обновляем optgroup в select
-        document.querySelectorAll('optgroup[data-lang]').forEach(optgroup => {
-            const key = optgroup.getAttribute('data-lang');
-            if (dictionaries[lang][key]) {
-                optgroup.label = dictionaries[lang][key];
-            }
-        });
-
-        // Обновляем заголовок календаря
-        updateCalendarTitle();
-    }
-
-    // Данные для календаря
-    let currentDate = new Date();
-
-    // Данные о транзакциях (для демонстрации)
-    const transactionsData = {
-        '2025-05-15': [
-            {type: 'income', category: 'salary', description: 'salary_may', amount: 45000, icon: 'bi-briefcase'},
-            {type: 'expense', category: 'utilities', description: 'utilities_may', amount: 8500, icon: 'bi-house'}
-        ],
-        '2025-05-10': [
-            {type: 'income', category: 'freelance', description: 'freelance_project', amount: 15000, icon: 'bi-laptop'}
-        ],
-        '2025-05-18': [
-            {type: 'expense', category: 'groceries', description: 'weekly_groceries', amount: 5200, icon: 'bi-cart'}
-        ],
-        '2025-05-12': [
-            {type: 'expense', category: 'transport', description: 'transport_taxi', amount: 2500, icon: 'bi-bus-front'}
-        ],
-        '2025-05-08': [
-            {type: 'expense', category: 'health', description: 'health_medicine', amount: 3500, icon: 'bi-heart-pulse'}
-        ],
-        '2025-05-05': [
-            {type: 'income', category: 'interest', description: 'bank_interest', amount: 15000, icon: 'bi-bank'}
-        ]
-    };
-
-    // Функция для получения названия месяца
-    function getMonthName(month) {
-        const monthNames = [
-            'january', 'february', 'march', 'april', 'may', 'june',
-            'july', 'august', 'september', 'october', 'november', 'december'
-        ];
-        return dictionaries[currentLang][monthNames[month]];
-    }
-
-    // Функция для обновления заголовка календаря
-    function updateCalendarTitle() {
-        const monthName = getMonthName(currentDate.getMonth());
-        document.getElementById('currentMonthYear').textContent = `${monthName} ${currentDate.getFullYear()}`;
-    }
-
-    // Функция для генерации календаря
-    function generateCalendar() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-
-        // Первый день месяца
-        const firstDay = new Date(year, month, 1);
-        // Последний день месяца
-        const lastDay = new Date(year, month + 1, 0);
-
-        // День недели первого дня месяца (0 - воскресенье, 1 - понедельник, ..., 6 - суббота)
-        let firstDayOfWeek = firstDay.getDay();
-        // Преобразуем для недели, начинающейся с понедельника
-        firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-
-        // Количество дней в месяце
-        const daysInMonth = lastDay.getDate();
-
-        // Очищаем контейнер календаря
-        const calendarDays = document.getElementById('calendarDays');
-        calendarDays.innerHTML = '';
-
-        // Добавляем дни предыдущего месяца
-        const prevMonth = new Date(year, month, 0);
-        const daysInPrevMonth = prevMonth.getDate();
-
-        for (let i = 0; i < firstDayOfWeek; i++) {
-            const day = daysInPrevMonth - firstDayOfWeek + i + 1;
-            const prevMonthDate = new Date(year, month - 1, day);
-            const dateString = formatDate(prevMonthDate);
-
-            const dayElement = createDayElement(day, dateString, true);
-            calendarDays.appendChild(dayElement);
-        }
-
-        // Добавляем дни текущего месяца
-        const today = new Date();
-        for (let i = 1; i <= daysInMonth; i++) {
-            const currentMonthDate = new Date(year, month, i);
-            const dateString = formatDate(currentMonthDate);
-
-            const isToday = today.getDate() === i &&
-                today.getMonth() === month &&
-                today.getFullYear() === year;
-
-            const dayElement = createDayElement(i, dateString, false, isToday);
-
-            // Добавляем индикаторы транзакций
-            addTransactionIndicators(dayElement, dateString);
-
-            calendarDays.appendChild(dayElement);
-        }
-
-        // Добавляем дни следующего месяца
-        const totalDaysShown = firstDayOfWeek + daysInMonth;
-        const daysFromNextMonth = 7 - (totalDaysShown % 7);
-
-        if (daysFromNextMonth < 7) {
-            for (let i = 1; i <= daysFromNextMonth; i++) {
-                const nextMonthDate = new Date(year, month + 1, i);
-                const dateString = formatDate(nextMonthDate);
-
-                const dayElement = createDayElement(i, dateString, true);
-                calendarDays.appendChild(dayElement);
-            }
-        }
-    }
-
-    // Функция для создания элемента дня
-    function createDayElement(day, dateString, isOtherMonth = false, isToday = false) {
-        const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day';
-        if (isOtherMonth) dayElement.classList.add('other-month');
-        if (isToday) dayElement.classList.add('today');
-
-        dayElement.onclick = function () {
-            showDayTransactions(dateString);
         };
 
-        const dayNumber = document.createElement('div');
-        dayNumber.className = 'calendar-day-number';
-        dayNumber.textContent = day;
+        // Текущий язык (по умолчанию русский)
+        let currentLang = 'ru';
 
-        const dayContent = document.createElement('div');
-        dayContent.className = 'calendar-day-content';
+        // Функция для изменения языка
+        function changeLanguage(lang) {
+            if (!dictionaries[lang]) return;
 
-        dayElement.appendChild(dayNumber);
-        dayElement.appendChild(dayContent);
+            currentLang = lang;
 
-        return dayElement;
-    }
+            // Обновляем атрибут lang у html
+            document.documentElement.lang = lang;
 
-    // Функция для добавления индикаторов транзакций
-    function addTransactionIndicators(dayElement, dateString) {
-        const transactions = transactionsData[dateString];
-        if (!transactions) return;
-
-        const dayContent = dayElement.querySelector('.calendar-day-content');
-
-        // Проверяем типы транзакций
-        let hasIncome = false;
-        let hasExpense = false;
-        let totalIncome = 0;
-        let totalExpense = 0;
-
-        transactions.forEach(transaction => {
-            if (transaction.type === 'income') {
-                hasIncome = true;
-                totalIncome += transaction.amount;
-            } else if (transaction.type === 'expense') {
-                hasExpense = true;
-                totalExpense += transaction.amount;
-            }
-        });
-
-        // Добавляем индикатор
-        const indicator = document.createElement('div');
-        indicator.className = 'calendar-indicator';
-
-        if (hasIncome && hasExpense) {
-            indicator.classList.add('calendar-indicator-both');
-        } else if (hasIncome) {
-            indicator.classList.add('calendar-indicator-income');
-        } else if (hasExpense) {
-            indicator.classList.add('calendar-indicator-expense');
-        }
-
-        dayElement.appendChild(indicator);
-
-        // Добавляем суммы
-        if (hasIncome) {
-            const incomeAmount = document.createElement('div');
-            incomeAmount.className = 'calendar-day-amount calendar-day-amount-income';
-            incomeAmount.textContent = `+${totalIncome.toLocaleString()} ₽`;
-            dayContent.appendChild(incomeAmount);
-        }
-
-        if (hasExpense) {
-            const expenseAmount = document.createElement('div');
-            expenseAmount.className = 'calendar-day-amount calendar-day-amount-expense';
-            expenseAmount.textContent = `-${totalExpense.toLocaleString()} ₽`;
-            dayContent.appendChild(expenseAmount);
-        }
-    }
-
-    // Функция для форматирования даты в строку YYYY-MM-DD
-    function formatDate(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    // Функция для форматирования даты в локализованную строку
-    function formatDateLocalized(dateString) {
-        const [year, month, day] = dateString.split('-');
-        const date = new Date(year, month - 1, day);
-
-        const monthName = getMonthName(date.getMonth());
-        return `${day} ${monthName} ${year}`;
-    }
-
-    // Функция для отображения транзакций за выбранный день
-    function showDayTransactions(dateString) {
-        // Обновляем выбранную дату
-        document.getElementById('selectedDate').textContent = formatDateLocalized(dateString);
-        document.getElementById('emptySelectedDate').textContent = formatDateLocalized(dateString);
-
-        // Устанавливаем дату в форме добавления транзакции
-        document.getElementById('transactionDate').value = dateString;
-
-        // Получаем транзакции за выбранный день
-        const transactions = transactionsData[dateString];
-
-        // Показываем соответствующий раздел
-        if (transactions && transactions.length > 0) {
-            document.getElementById('dailyTransactionsSection').classList.remove('d-none');
-            document.getElementById('emptyTransactionsSection').classList.add('d-none');
-
-            // Отображаем транзакции
-            const transactionList = document.querySelector('.transaction-list');
-            transactionList.innerHTML = '';
-
-            transactions.forEach(transaction => {
-                const transactionItem = document.createElement('div');
-                transactionItem.className = 'transaction-item';
-
-                const iconClass = transaction.type === 'income' ? 'transaction-icon-income' : 'transaction-icon-expense';
-
-                transactionItem.innerHTML = `
-                    <div class="transaction-icon ${iconClass}">
-                        <i class="bi ${transaction.icon}"></i>
-                    </div>
-                    <div class="transaction-details">
-                        <div class="transaction-category" data-lang="${transaction.category}">${dictionaries[currentLang][transaction.category]}</div>
-                        <div class="transaction-description" data-lang="${transaction.description}">${dictionaries[currentLang][transaction.description]}</div>
-                    </div>
-                    <div class="transaction-amount transaction-amount-${transaction.type}">
-                        ${transaction.type === 'income' ? '+' : '-'}${transaction.amount.toLocaleString()} ₽
-                    </div>
-                `;
-
-                transactionList.appendChild(transactionItem);
+            // Обновляем активную кнопку языка
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
-        } else {
-            document.getElementById('dailyTransactionsSection').classList.add('d-none');
-            document.getElementById('emptyTransactionsSection').classList.remove('d-none');
+            document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+            // Обновляем все элементы с атрибутом data-lang
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (dictionaries[lang][key]) {
+                    element.textContent = dictionaries[lang][key];
+                }
+            });
+
+            // Обновляем плейсхолдеры
+            document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-lang-placeholder');
+                if (dictionaries[lang][key]) {
+                    element.placeholder = dictionaries[lang][key];
+                }
+            });
+
+            // Обновляем атрибуты data-weekday для дней календаря
+            updateWeekdayLabels();
+
+            // Обновляем выбранную дату
+            updateSelectedDateDisplay();
         }
 
-        // Выделяем выбранный день в календаре
-        document.querySelectorAll('.calendar-day').forEach(day => {
-            day.classList.remove('active');
-        });
+        // Функция для обновления меток дней недели
+        function updateWeekdayLabels() {
+            const weekdays = {
+                ru: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+                en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                th: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา']
+            };
 
-        const selectedDay = Array.from(document.querySelectorAll('.calendar-day')).find(day => {
-            return day.onclick.toString().includes(dateString);
-        });
-
-        if (selectedDay) {
-            selectedDay.classList.add('active');
+            document.querySelectorAll('.calendar-day-number').forEach(dayNumber => {
+                const weekdayIndex = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].indexOf(dayNumber.getAttribute('data-weekday'));
+                if (weekdayIndex !== -1) {
+                    dayNumber.setAttribute('data-weekday', weekdays[currentLang][weekdayIndex]);
+                }
+            });
         }
-    }
 
-    // Функция для перехода к предыдущему месяцу
-    function goToPrevMonth() {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        updateCalendarTitle();
-        generateCalendar();
-    }
+        // Функция для обновления отображения выбранной даты
+        function updateSelectedDateDisplay() {
+            const selectedDateElement = document.getElementById('selectedDate');
+            const activeDay = document.querySelector('.calendar-day.active');
 
-    // Функция для перехода к следующему месяцу
-    function goToNextMonth() {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        updateCalendarTitle();
-        generateCalendar();
-    }
+            if (activeDay && selectedDateElement) {
+                const date = new Date(activeDay.getAttribute('data-date'));
 
-    // Функция для перехода к текущему месяцу
-    function goToCurrentMonth() {
-        currentDate = new Date();
-        updateCalendarTitle();
-        generateCalendar();
+                // Форматируем дату в зависимости от языка
+                let formattedDate;
+                if (currentLang === 'ru') {
+                    const day = date.getDate();
+                    const month = date.toLocaleString('ru', { month: 'long' });
+                    const year = date.getFullYear();
+                    const weekday = date.toLocaleString('ru', { weekday: 'long' });
+                    formattedDate = `${day} ${month} ${year}, ${weekday.charAt(0).toUpperCase() + weekday.slice(1)}`;
+                } else if (currentLang === 'en') {
+                    formattedDate = date.toLocaleString('en', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        weekday: 'long'
+                    });
+                } else if (currentLang === 'th') {
+                    formattedDate = date.toLocaleString('th', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        weekday: 'long'
+                    });
+                }
 
-        // Показываем транзакции за сегодня
-        const today = formatDate(new Date());
-        showDayTransactions(today);
-    }
-
-    // Инициализация при загрузке страницы
-    document.addEventListener('DOMContentLoaded', function () {
-        // Проверяем, есть ли сохраненный язык в localStorage
-        const savedLang = localStorage.getItem('preferredLanguage');
-        if (savedLang && dictionaries[savedLang]) {
-            changeLanguage(savedLang);
-        } else {
-            // Если нет сохраненного языка, используем язык браузера или русский по умолчанию
-            const browserLang = navigator.language.split('-')[0];
-            if (dictionaries[browserLang]) {
-                changeLanguage(browserLang);
-            } else {
-                changeLanguage('ru');
+                selectedDateElement.textContent = formattedDate;
             }
         }
 
-        // Инициализируем календарь
-        updateCalendarTitle();
-        generateCalendar();
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, есть ли сохраненный язык в localStorage
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && dictionaries[savedLang]) {
+                changeLanguage(savedLang);
+            } else {
+                // Если нет сохраненного языка, используем язык браузера или русский по умолчанию
+                const browserLang = navigator.language.split('-')[0];
+                if (dictionaries[browserLang]) {
+                    changeLanguage(browserLang);
+                } else {
+                    changeLanguage('ru');
+                }
+            }
 
-        // Показываем транзакции за сегодня
-        const today = formatDate(new Date());
-        showDayTransactions(today);
+            // Мобильное меню
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const navigation = document.getElementById('navigation');
 
-        // Добавляем обработчики событий для навигации по календарю
-        document.getElementById('prevMonth').addEventListener('click', goToPrevMonth);
-        document.getElementById('nextMonth').addEventListener('click', goToNextMonth);
-        document.getElementById('currentMonth').addEventListener('click', goToCurrentMonth);
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    navigation.classList.add('active');
+                });
+            }
 
-        // Добавляем обработчик события для формы добавления транзакции
-        document.getElementById('addTransactionForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            // Здесь будет логика добавления транзакции
-            alert('Функция добавления транзакции будет реализована на сервере');
-            document.getElementById('addTransactionModal').querySelector('.btn-close').click();
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', function() {
+                    navigation.classList.remove('active');
+                });
+            }
+
+            // Закрытие мобильного меню при клике на ссылку
+            document.querySelectorAll('.nav-item a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navigation.classList.remove('active');
+                });
+            });
+
+            // Инициализация модального окна для добавления транзакции
+            const transactionModal = new bootstrap.Modal(document.getElementById('transactionModal'));
+
+            // Обработчик для кнопки "Добавить транзакцию"
+            document.getElementById('addTransactionBtn').addEventListener('click', function() {
+                // Устанавливаем текущую дату в форме
+                const activeDay = document.querySelector('.calendar-day.active');
+                if (activeDay) {
+                    document.getElementById('transactionDate').value = activeDay.getAttribute('data-date');
+                }
+
+                // Показываем модальное окно
+                transactionModal.show();
+            });
+
+            // Обработчик для кнопок добавления транзакции в ячейках календаря
+            document.querySelectorAll('.calendar-add-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Предотвращаем всплытие события
+
+                    // Получаем ячейку календаря
+                    const calendarDay = this.closest('.calendar-day');
+
+                    // Устанавливаем активный день
+                    document.querySelectorAll('.calendar-day').forEach(day => {
+                        day.classList.remove('active');
+                    });
+                    calendarDay.classList.add('active');
+
+                    // Обновляем детали дня
+                    updateDayDetails(calendarDay);
+
+                    // Устанавливаем дату в форме
+                    document.getElementById('transactionDate').value = calendarDay.getAttribute('data-date');
+
+                    // Показываем модальное окно
+                    transactionModal.show();
+                });
+            });
+
+            // Обработчик для сохранения транзакции
+            document.getElementById('saveTransactionBtn').addEventListener('click', function() {
+                // Получаем данные из формы
+                const date = document.getElementById('transactionDate').value;
+                const type = document.querySelector('input[name="transactionType"]:checked').value;
+                const amount = document.getElementById('transactionAmount').value;
+                const category = document.getElementById('transactionCategory').value;
+                const description = document.getElementById('transactionDescription').value;
+
+                // Проверяем, что все поля заполнены
+                if (!date || !amount || !category || !description) {
+                    alert('Пожалуйста, заполните все поля');
+                    return;
+                }
+
+                // Здесь будет логика сохранения транзакции
+                // В реальном приложении здесь будет отправка данных на сервер
+
+                // Закрываем модальное окно
+                transactionModal.hide();
+
+                // Сбрасываем форму
+                document.getElementById('transactionForm').reset();
+
+                // Обновляем календарь (в реальном приложении здесь будет обновление данных с сервера)
+                // Для демонстрации просто добавим новую транзакцию в активный день
+                const activeDay = document.querySelector('.calendar-day.active');
+                if (activeDay) {
+                    const dayContent = activeDay.querySelector('.calendar-day-content');
+
+                    // Создаем элемент транзакции
+                    const transactionElement = document.createElement('div');
+                    transactionElement.className = `calendar-transaction ${type}`;
+
+                    // Определяем иконку в зависимости от категории
+                    let icon;
+                    switch (category) {
+                        case 'housing':
+                            icon = 'bi-house';
+                            break;
+                        case 'groceries':
+                            icon = 'bi-cart';
+                            break;
+                        case 'transport':
+                            icon = 'bi-car-front';
+                            break;
+                        case 'entertainment':
+                            icon = 'bi-cup-hot';
+                            break;
+                        case 'health':
+                            icon = 'bi-heart-pulse';
+                            break;
+                        case 'education':
+                            icon = 'bi-book';
+                            break;
+                        case 'utilities':
+                            icon = 'bi-phone';
+                            break;
+                        case 'salary':
+                            icon = 'bi-briefcase';
+                            break;
+                        case 'investments':
+                            icon = 'bi-bank';
+                            break;
+                        case 'gifts':
+                            icon = 'bi-gift';
+                            break;
+                        default:
+                            icon = 'bi-wallet2';
+                    }
+
+                    transactionElement.innerHTML = `
+                        <i class="bi ${icon}"></i>
+                        <span>${description}</span>
+                    `;
+
+                    dayContent.appendChild(transactionElement);
+
+                    // Обновляем сумму дня
+                    let daySummary = activeDay.querySelector('.calendar-day-summary');
+                    if (!daySummary) {
+                        daySummary = document.createElement('div');
+                        daySummary.className = 'calendar-day-summary';
+                        activeDay.appendChild(daySummary);
+                    }
+
+                    // Обновляем или создаем элемент для отображения суммы
+                    let dayAmount = daySummary.querySelector(`.calendar-day-${type}`);
+                    if (!dayAmount) {
+                        dayAmount = document.createElement('div');
+                        dayAmount.className = `calendar-day-${type}`;
+                        daySummary.appendChild(dayAmount);
+                    }
+
+                    // Форматируем сумму
+                    const formattedAmount = type === 'income' ? `+${amount} ₽` : `-${amount} ₽`;
+                    dayAmount.textContent = formattedAmount;
+
+                    // Обновляем детали дня
+                    updateDayDetails(activeDay);
+                }
+
+                // Показываем уведомление об успешном сохранении
+                alert(dictionaries[currentLang].transaction_save_success || 'Транзакция успешно сохранена!');
+            });
+
+            // Обработчик для выбора дня в календаре
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.addEventListener('click', function() {
+                    // Устанавливаем активный день
+                    document.querySelectorAll('.calendar-day').forEach(d => {
+                        d.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    // Обновляем детали дня
+                    updateDayDetails(this);
+                });
+            });
+
+            // Обработчик для кнопки "Сегодня"
+            document.getElementById('todayBtn').addEventListener('click', function() {
+                // Находим ячейку с сегодняшней датой
+                const today = document.querySelector('.calendar-day.today');
+                if (today) {
+                    // Устанавливаем активный день
+                    document.querySelectorAll('.calendar-day').forEach(day => {
+                        day.classList.remove('active');
+                    });
+                    today.classList.add('active');
+
+                    // Обновляем детали дня
+                    updateDayDetails(today);
+
+                    // Прокручиваем к сегодняшней дате
+                    today.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+            // Обработчики для кнопок навигации по месяцам
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                // В реальном приложении здесь будет логика перехода к предыдущему месяцу
+                alert('Переход к предыдущему месяцу');
+            });
+
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                // В реальном приложении здесь будет логика перехода к следующему месяцу
+                alert('Переход к следующему месяцу');
+            });
+
+            // Обработчики для кнопок выбора вида календаря
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Устанавливаем активную кнопку
+                    document.querySelectorAll('.view-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    // В реальном приложении здесь будет логика изменения вида календаря
+                    const view = this.getAttribute('data-view');
+                    alert(`Переключение на вид: ${view}`);
+                });
+            });
+
+            // Функция для обновления деталей дня
+            function updateDayDetails(day) {
+                // Получаем дату
+                const date = day.getAttribute('data-date');
+                const dateObj = new Date(date);
+
+                // Форматируем дату в зависимости от языка
+                let formattedDate;
+                if (currentLang === 'ru') {
+                    const dayNum = dateObj.getDate();
+                    const month = dateObj.toLocaleString('ru', { month: 'long' });
+                    const year = dateObj.getFullYear();
+                    const weekday = dateObj.toLocaleString('ru', { weekday: 'long' });
+                    formattedDate = `${dayNum} ${month} ${year}, ${weekday.charAt(0).toUpperCase() + weekday.slice(1)}`;
+                } else if (currentLang === 'en') {
+                    formattedDate = dateObj.toLocaleString('en', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        weekday: 'long'
+                    });
+                } else if (currentLang === 'th') {
+                    formattedDate = dateObj.toLocaleString('th', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        weekday: 'long'
+                    });
+                }
+
+                // Обновляем выбранную дату
+                document.getElementById('selectedDate').textContent = formattedDate;
+
+                // Получаем доходы и расходы дня
+                const incomeElement = day.querySelector('.calendar-day-income');
+                const expenseElement = day.querySelector('.calendar-day-expense');
+
+                let income = 0;
+                let expense = 0;
+
+                if (incomeElement) {
+                    // Извлекаем числовое значение из строки "+75 000 ₽"
+                    income = parseInt(incomeElement.textContent.replace(/[^0-9]/g, '')) || 0;
+                }
+
+                if (expenseElement) {
+                    // Извлекаем числовое значение из строки "-2 500 ₽"
+                    expense = parseInt(expenseElement.textContent.replace(/[^0-9]/g, '')) || 0;
+                }
+
+                // Обновляем суммы в деталях дня
+                document.getElementById('dayIncome').textContent = income ? `${income} ₽` : '0 ₽';
+                document.getElementById('dayExpense').textContent = expense ? `${expense} ₽` : '0 ₽';
+
+                // В реальном приложении здесь будет логика загрузки транзакций для выбранного дня
+                // Для демонстрации просто показываем заглушку
+
+                // Если это 16 мая, показываем предопределенные транзакции
+                if (date === '2025-05-16') {
+                    document.querySelector('.transaction-list').innerHTML = `
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-icon-expense">
+                                <i class="bi bi-phone"></i>
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-title" data-lang="transaction_phone">${dictionaries[currentLang].transaction_phone}</div>
+                                <div class="transaction-category" data-lang="category_utilities">${dictionaries[currentLang].category_utilities}</div>
+                            </div>
+                            <div class="transaction-amount expense">-800 ₽</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-icon-expense">
+                                <i class="bi bi-cup-hot"></i>
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-title" data-lang="transaction_cafe">${dictionaries[currentLang].transaction_cafe}</div>
+                                <div class="transaction-category" data-lang="category_entertainment">${dictionaries[currentLang].category_entertainment}</div>
+                            </div>
+                            <div class="transaction-amount expense">-1 000 ₽</div>
+                        </div>
+                    `;
+                } else if (date === '2025-05-10') {
+                    document.querySelector('.transaction-list').innerHTML = `
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-icon-income">
+                                <i class="bi bi-briefcase"></i>
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-title" data-lang="category_salary">${dictionaries[currentLang].category_salary}</div>
+                                <div class="transaction-category" data-lang="transaction_income">${dictionaries[currentLang].transaction_income}</div>
+                            </div>
+                            <div class="transaction-amount income">+75 000 ₽</div>
+                        </div>
+                    `;
+                } else if (date === '2025-05-01') {
+                    document.querySelector('.transaction-list').innerHTML = `
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-icon-expense">
+                                <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-title" data-lang="category_groceries">${dictionaries[currentLang].category_groceries}</div>
+                                <div class="transaction-category" data-lang="transaction_expenses">${dictionaries[currentLang].transaction_expenses}</div>
+                            </div>
+                            <div class="transaction-amount expense">-2 500 ₽</div>
+                        </div>
+                    `;
+                } else if (date === '2025-05-12') {
+                    document.querySelector('.transaction-list').innerHTML = `
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-icon-expense">
+                                <i class="bi bi-house"></i>
+                            </div>
+                            <div class="transaction-info">
+                                <div class="transaction-title" data-lang="category_housing">${dictionaries[currentLang].category_housing}</div>
+                                <div class="transaction-category" data-lang="transaction_expenses">${dictionaries[currentLang].transaction_expenses}</div>
+                            </div>
+                            <div class="transaction-amount expense">-30 000 ₽</div>
+                        </div>
+                    `;
+                } else {
+                    // Для остальных дней показываем пустой список
+                    document.querySelector('.transaction-list').innerHTML = `
+                        <div class="text-center py-4 text-secondary">
+                            <i class="bi bi-info-circle mb-2" style="font-size: 2rem;"></i>
+                            <p>${dictionaries[currentLang].calendar_no_transactions || 'Нет транзакций для выбранного дня'}</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // Сохраняем выбранный язык в localStorage при изменении
+            window.changeLanguage = function(lang) {
+                if (!dictionaries[lang]) return;
+
+                currentLang = lang;
+
+                // Обновляем атрибут lang у html
+                document.documentElement.lang = lang;
+
+                // Обновляем активную кнопку языка
+                document.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`.language-btn[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+
+                // Обновляем все элементы с атрибутом data-lang
+                document.querySelectorAll('[data-lang]').forEach(element => {
+                    const key = element.getAttribute('data-lang');
+                    if (dictionaries[lang][key]) {
+                        element.textContent = dictionaries[lang][key];
+                    }
+                });
+
+                // Обновляем плейсхолдеры
+                document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+                    const key = element.getAttribute('data-lang-placeholder');
+                    if (dictionaries[lang][key]) {
+                        element.placeholder = dictionaries[lang][key];
+                    }
+                });
+
+                // Обновляем атрибуты data-weekday для дней календаря
+                updateWeekdayLabels();
+
+                // Обновляем выбранную дату
+                updateSelectedDateDisplay();
+
+                // Обновляем детали дня
+                const activeDay = document.querySelector('.calendar-day.active');
+                if (activeDay) {
+                    updateDayDetails(activeDay);
+                }
+
+                localStorage.setItem('preferredLanguage', lang);
+            };
         });
-    });
-
-    // Сохраняем выбранный язык в localStorage при изменении
-    const originalChangeLanguage = changeLanguage;
-    changeLanguage = function (lang) {
-        originalChangeLanguage(lang);
-        localStorage.setItem('preferredLanguage', lang);
-    };
-</script>
+    </script>
 </body>
 </html>

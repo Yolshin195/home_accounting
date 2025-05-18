@@ -7,7 +7,9 @@ from litestar.template.config import TemplateConfig
 
 from app.controllers import routers
 from app.db import sqlalchemy_config
+from app.middleware import redirect_unauthorized_users_middleware_factory
 from app.security import litestar_users
+from litestar.plugins.htmx import HTMXPlugin
 
 
 app = Litestar(
@@ -17,4 +19,5 @@ app = Litestar(
         engine=JinjaTemplateEngine,
     ),
     plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config), litestar_users],
+    middleware=[redirect_unauthorized_users_middleware_factory]
 )

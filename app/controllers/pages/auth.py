@@ -12,8 +12,12 @@ from litestar_users.dependencies import provide_user_service
 from app.security import UserRegistrationDTO, UserReadDTO, UserRegistrationSchema
 from litestar.response import Template
 
+
 class AuthPageController(Controller):
-    @get('/auth')
+    @get(
+        '/auth',
+        exclude_from_auth=True
+    )
     async def index(self) -> Template:
         return Template(template_name="auth_v2.html.jinja2")
 

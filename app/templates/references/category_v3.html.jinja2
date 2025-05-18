@@ -769,61 +769,9 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-inner">
-                <div class="brand">
-                    <i class="bi bi-wallet2 brand-icon"></i>
-                    <h1 class="brand-title" data-lang="app_title">Домашняя бухгалтерия</h1>
-                </div>
-
-                <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                    <i class="bi bi-list"></i>
-                </button>
-
-                <div class="navigation" id="navigation">
-                    <button class="mobile-menu-close" id="mobileMenuClose">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-
-                    <nav>
-                        <ul class="nav-list">
-                            <li class="nav-item">
-                                <a href="/v2/landing" data-lang="nav_home">Главная</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/v2/dashboard" data-lang="nav_dashboard">Дашборд</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/v2" data-lang="nav_transactions">Транзакции</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/v2/categories" class="active" data-lang="nav_categories">Категории</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/v2/calendar" data-lang="nav_calendar">Календарь</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/v2/budget" data-lang="nav_budget">Бюджет</a>
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <div class="language-selector">
-                        <button class="language-btn" onclick="changeLanguage('en')" title="English">
-                            <span class="lang-text">EN</span>
-                        </button>
-                        <button class="language-btn active" onclick="changeLanguage('ru')" title="Русский">
-                            <span class="lang-text">RU</span>
-                        </button>
-                        <button class="language-btn" onclick="changeLanguage('th')" title="ไทย">
-                            <span class="lang-text">TH</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    {% with active_page='category' %}
+        {% include "navbar.html.jinja2" %}
+    {% endwith %}
 
     <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
         <h1 class="page-title" data-lang="categories_title">Управление категориями</h1>
@@ -852,6 +800,31 @@
                         </div>
 
                         <div class="category-list">
+                            {% for category in categories %}
+                            <div class="category-item" data-category-id="{{ category.id }}" data-category-type="{{ category.type.value }}">
+                                <div class="category-icon category-icon-{{ category.type.value }}">
+                                    <i class="bi {{ category.icon }}"></i>
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name">{{ category.name }}</div>
+                                    <div class="category-description">{{ category.description }}</div>
+                                </div>
+                                {% if category.type.value == 'income' %}
+                                    <div class="badge badge-success" data-lang="category_type_income">Доход</div>
+                                {% else %}
+                                    <div class="badge badge-danger" data-lang="category_type_expense">Расход</div>
+                                {% endif %}
+                                <div class="category-actions">
+                                    <button class="action-btn" title="Редактировать">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="action-btn action-btn-danger" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+
                             <!-- Категории доходов -->
                             <div class="category-item" data-category-type="income">
                                 <div class="category-icon category-icon-income">
@@ -1109,7 +1082,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="categoryForm">
+                    <form id="categoryForm" action="/v2/reference/category" method="post">
                         <div class="form-group">
                             <label for="categoryName" class="form-label" data-lang="category_name">Название категории</label>
                             <input name="name" type="text" class="form-control" id="categoryName" placeholder="Например: Продукты" data-lang-placeholder="category_name_placeholder">
@@ -1131,6 +1104,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" data-lang="category_icon">Иконка</label>
+                            <input type="hidden" name="icon" id="categoryIcon" value="bi-wallet2">
                             <div class="icon-selector">
                                 <div class="icon-option selected" data-icon="bi-wallet2">
                                     <i class="bi bi-wallet2"></i>
@@ -1174,7 +1148,27 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline" data-bs-dismiss="modal" data-lang="categories_cancel">Отмена</button>
-                    <button type="button" class="btn btn-primary" id="saveCategoryBtn" data-lang="categories_save">Сохранить</button>
+                    <button type="submit" form="categoryForm" class="btn btn-primary" id="saveCategoryBtn" data-lang="categories_save">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для удаления категории -->
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-delete">
+                    <h5 class="modal-title" id="deleteCategoryModalLabel" data-lang="delete_category_title">Удаление категории</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><span data-lang="delete_category_confirmation">Вы действительно хотите удалить категорию</span> <strong>"<span data-lang="expense_groceries">Продукты</span>"</strong>?</p>
+                    <p class="text-danger" data-lang="delete_category_warning">Внимание! Все операции, связанные с этой категорией, также будут удалены. Это действие нельзя будет отменить.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-lang="cancel">Отмена</button>
+                    <button type="button" class="btn btn-danger" data-lang="delete">Удалить</button>
                 </div>
             </div>
         </div>
@@ -1527,10 +1521,14 @@
             });
 
             // Выбор иконки
+            const iconInput = document.getElementById('categoryIcon');
             document.querySelectorAll('.icon-option').forEach(option => {
                 option.addEventListener('click', function() {
                     document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
                     this.classList.add('selected');
+                    // Устанавливаем значение иконки в скрытое поле
+                    iconInput.value = this.getAttribute('data-icon');
+
                 });
             });
 
@@ -1559,6 +1557,7 @@
                             if (opt.getAttribute('data-icon') === categoryIcon) {
                                 document.querySelectorAll('.icon-option').forEach(o => o.classList.remove('selected'));
                                 opt.classList.add('selected');
+                                iconInput.value = opt.getAttribute('data-icon');
                             }
                         });
 
@@ -1582,54 +1581,6 @@
                         updateCategoryStats();
                     }
                 });
-            });
-
-            // Сохранение категории
-            document.getElementById('saveCategoryBtn').addEventListener('click', function() {
-                // Получаем данные из формы
-                const categoryName = document.getElementById('categoryName').value;
-                const categoryDesc = document.getElementById('categoryDescription').value;
-                const categoryType = document.querySelector('input[name="categoryType"]:checked').value;
-                const categoryIcon = document.querySelector('.icon-option.selected').getAttribute('data-icon');
-
-                // Здесь будет логика сохранения категории
-                // В реальном приложении здесь будет отправка данных на сервер
-
-                // Закрываем модальное окно
-                categoryModal.hide();
-
-                // Показываем уведомление об успешном сохранении
-                alert(dictionaries[currentLang].categories_save_success || 'Категория успешно сохранена!');
-
-                // Обновляем список категорий (в реальном приложении здесь будет обновление списка с сервера)
-                // Для демонстрации просто добавим новую категорию в список
-                const categoryList = document.querySelector('.category-list');
-                const newCategory = document.createElement('div');
-                newCategory.className = 'category-item';
-                newCategory.setAttribute('data-category-type', categoryType);
-                newCategory.innerHTML = `
-                    <div class="category-icon category-icon-${categoryType}">
-                        <i class="bi ${categoryIcon}"></i>
-                    </div>
-                    <div class="category-info">
-                        <div class="category-name">${categoryName}</div>
-                        <div class="category-description">${categoryDesc}</div>
-                    </div>
-                    <div class="badge badge-${categoryType === 'income' ? 'success' : 'danger'}">${categoryType === 'income' ? dictionaries[currentLang].category_type_income : dictionaries[currentLang].category_type_expense}</div>
-                    <div class="category-actions">
-                        <button class="action-btn" title="Редактировать">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="action-btn action-btn-danger" title="Удалить">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                `;
-
-                categoryList.appendChild(newCategory);
-
-                // Обновляем статистику
-                updateCategoryStats();
             });
 
             // Функция обновления статистики категорий

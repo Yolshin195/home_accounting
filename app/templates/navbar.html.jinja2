@@ -1,0 +1,55 @@
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <div class="brand">
+                    <i class="bi bi-wallet2 brand-icon"></i>
+                    <h1 class="brand-title" data-lang="app_title">Домашняя бухгалтерия</h1>
+                </div>
+
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <div class="navigation" id="navigation">
+                    <button class="mobile-menu-close" id="mobileMenuClose">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+
+                    <nav>
+                        <ul class="nav-list">
+                            <li class="nav-item">
+                                <a href="/v2/landing" {% if active_page == 'landing' %}class="active"{% endif %} data-lang="nav_home">Главная</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2/dashboard" {% if active_page == 'dashboard' %}class="active"{% endif %} data-lang="nav_dashboard">Дашборд</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2" {% if active_page == 'transaction' %}class="active"{% endif %} data-lang="nav_transactions">Транзакции</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2/reference/category" {% if active_page == 'category' %}class="active"{% endif %} data-lang="nav_categories">Категории</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2/calendar" {% if active_page == 'calendar' %}class="active"{% endif %} data-lang="nav_calendar">Календарь</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/v2/budget" {% if active_page == 'budget' %}class="active"{% endif %} data-lang="nav_budget">Бюджет</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="language-selector">
+                        <button class="language-btn" onclick="changeLanguage('en')" title="English">
+                            <span class="lang-text">EN</span>
+                        </button>
+                        <button class="language-btn active" onclick="changeLanguage('ru')" title="Русский">
+                            <span class="lang-text">RU</span>
+                        </button>
+                        <button class="language-btn" onclick="changeLanguage('th')" title="ไทย">
+                            <span class="lang-text">TH</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>

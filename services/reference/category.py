@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from models import UserProfile, Category
 from repositories import CategoryRepositoryService
 from schema import CategoryCreate
@@ -19,3 +21,8 @@ class CategoryReferenceService:
             type=new_category.type,
             author=self.author,
         ), auto_commit=True)
+
+    async def delete_category(self, category_id: UUID) -> None:
+        category = await self.repo.get_one(author=self.author, id=category_id)
+        if category:
+            await self.repo.delete(category, auto_commit=True)
